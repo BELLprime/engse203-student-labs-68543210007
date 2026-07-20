@@ -27,9 +27,10 @@
 
 ## ผลการรัน npm run check / npm run build`
 ---
-npm run check
+ผลการรัน npm run check
 ![alt text](image/npm_check.png)
-npm run build
+
+ผลการรัน npm run build
 ![alt text](image/npm_build.png)
 
 ---
