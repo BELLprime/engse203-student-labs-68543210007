@@ -2,17 +2,17 @@
   {
     "week": "week-01",
     "title": "Developer Environment & GitHub Repository Setup",
-    "status": "draft",
-    "originalRepoUrl": "",
-    "originalCommit": "",
-    "pullRequestUrl": "",
-    "submissionTag": "",
-    "testStatus": "not-tested",
+    "status": "submitted",
+    "originalRepoUrl": "https://github.com/BELLprime/engse203-lab01-68543210007-9",
+    "originalCommit": "b05da83",
+    "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/1",
+    "submissionTag": "lab-01-submission-v1",
+    "testStatus": "pass",
     "notes": "LAB 1 ใช้ evidence report ได้โดยไม่ต้องมี web application",
     "pageUrl": "https://BELLprime.github.io/engse203-student-labs-68543210007/labs/week-01/",
     "sourceUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/tree/lab/week-01/labs/week-01/source",
     "hasPublish": false,
-    "sourceEntries": 0
+    "sourceEntries": 4
   },
   {
     "week": "week-02",
