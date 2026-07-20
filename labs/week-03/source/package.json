@@ -1,0 +1,15 @@
+{
+  "name": "engse203-lab03-68543210007-9",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "node --check src/main.js"
+  },
+  "devDependencies": {
+    "vite": "^8.1.1"
+  }
+}
