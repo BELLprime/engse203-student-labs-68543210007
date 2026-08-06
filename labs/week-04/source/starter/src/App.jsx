@@ -37,14 +37,16 @@ function App() {
 
   return (
     <>
-      <AppHeader title="Study Task Board" subtitle="CP03 — State, derived data และ filter" />
+      <AppHeader title="Study Task Board" subtitle="CP05 — Callback delete และ Conditional Rendering" />
       <main className="container page-content">
         <SummaryPanel summary={summary} />
-        <section className="panel">
-          <FilterBar value={statusFilter} onFilterChange={setStatusFilter} />
-          <TaskList tasks={filteredTasks} onDeleteTask={handleDeleteTask} />
+        <div className="workspace-grid">
           <TaskForm onAddTask={handleAddTask}/>
-        </section>
+          <section className="panel">
+            <FilterBar value={statusFilter} onFilterChange={setStatusFilter} />
+            <TaskList tasks={filteredTasks} onDeleteTask={handleDeleteTask} />
+          </section>
+        </div>
       </main>
     </>
   );

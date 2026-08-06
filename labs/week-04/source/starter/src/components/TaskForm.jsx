@@ -25,10 +25,10 @@ function TaskForm({ onAddTask }) {
   //hadle event
   function handleChange(event) {
     const { name, value } = event.target;
-    setFormData((current) => ({
-      ...current,
-      [name]: value,
-    }));
+    setFormData((current) => ({ ...current, [name]: value }));
+    setErrors((current) => ({ ...current, [name]: '' }));
+    setFeedback('');
+
   }
 
   function handleSubmit(event) {
@@ -49,64 +49,64 @@ function TaskForm({ onAddTask }) {
   }
   
   return (
-    <form className="task-form" onSubmit={handleSubmit}>
-      <h2>เพิ่มงานใหม่</h2>
-      {/* ---- Title ---- */}
-      <div className="form-group">
-        <label htmlFor="title">ชื่องาน : </label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          value={formData.title}
-          onChange={handleChange}
-          aria-invalid={!!errors.title}
-        />
-        {errors.title && (
-          <p className="field-error" role="alert">
+    <section className="panel" aria-labelledby="task-form-title" >
+      <p className="eyebrow dark">CONTROLLED FORM</p>
+      <h2 id="task-form-title">เพิ่มงานฝึก</h2>
+
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="field">
+          <label htmlFor="title">ชื่องาน</label>
+          <input
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            aria-invalid={Boolean(errors.title)}
+            aria-describedby="title-error"
+          />
+          <small className="error" id="title-error">
             {errors.title}
-          </p>
-        )}
-      </div>
-      {/* ---- Category ---- */}
-      <div className="form-group">
-        <label htmlFor="category">หมวดหมู่ : </label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          aria-invalid={!!errors.category}
-        >
-          <option value="">— เลือกหมวดหมู่ —</option>
-          <option value="reading">Reading</option>
-          <option value="coding">Coding</option>
-          <option value="review">Review</option>
-        </select>
-        {errors.category && (
-          <p className="field-error" role="alert">
+          </small>
+        </div>
+        <div className="field">
+          <label htmlFor="category">ประเภท</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            aria-invalid={Boolean(errors.category)}
+            aria-describedby="category-error"
+          >
+            <option value="">-- เลือกประเภท --</option>
+            <option value="reading">อ่าน/ทบทวน</option>
+            <option value="coding">เขียนโค้ด</option>
+            <option value="review">ตรวจและอธิบาย</option>
+          </select>
+          <small className="error" id="category-error">
             {errors.category}
-          </p>
-        )}
-      </div>
-      {/* ---- Priority ---- */}
-      <div className="form-group">
-        <label htmlFor="priority">ความสำคัญ : </label>
-        <select
-          id="priority"
-          name="priority"
-          value={formData.priority}
-          onChange={handleChange}
-        >
-          <option value="low">low</option>
-          <option value="normal">normal</option>
-          <option value="high">high</option>
-        </select>
-      </div>
-      <button type="submit">
-        เพิ่มงาน
-      </button>
-    </form>
+          </small>
+        </div>
+
+        <div className="field">
+          <label htmlFor="priority">ความสำคัญ</label>
+          <select
+            id="priority"
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+          >
+            <option value="normal">ปกติ</option>
+            <option value="high">สำคัญ</option>
+          </select>
+        </div>
+
+        <button type="submit">เพิ่มงาน</button>
+        <p className="status" role="status">
+          {feedback}
+        </p>
+      </form>
+    </section>
   );
 }
 
