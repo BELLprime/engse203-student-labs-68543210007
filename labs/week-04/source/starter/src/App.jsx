@@ -37,7 +37,7 @@ function App() {
 
   return (
     <>
-      <AppHeader title="Study Task Board" subtitle="CP05 — Callback delete และ Conditional Rendering" />
+      <AppHeader title="Study Task Board" subtitle="CP06 — Responsive UI และ Accessibility" />
       <main className="container page-content">
         <SummaryPanel summary={summary} />
         <div className="workspace-grid">

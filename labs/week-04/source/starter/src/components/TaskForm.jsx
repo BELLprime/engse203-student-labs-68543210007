@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 const initialForm = {
-  title: "",
-  category: "",
-  priority: "normal",
+  title: '',
+  category: '',
+  priority: 'normal',
 };
 
 function validateTask(formData) {

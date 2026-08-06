@@ -1,8 +1,8 @@
 const filters = [
-  ['all', 'ทั้งหมด'],
-  ['todo', 'ต้องทำ'],
-  ['doing', 'กำลังทำ'],
-  ['done', 'เสร็จแล้ว'],
+  ['all', 'All'],
+  ['todo', 'Todo'],
+  ['doing', 'Doing'],
+  ['done', 'Done'],
 ];
 
 function FilterBar({ value, onFilterChange }) {
