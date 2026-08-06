@@ -45,7 +45,7 @@ input:focus-visible, select:focus-visible, button:focus-visible { outline: .2rem
 .status { min-height: 1.35rem; margin-bottom: 0; font-weight: 700; }
 form > button, .filter-active { border: 0; border-radius: .65rem; padding: .72rem 1rem; color: white; background: var(--blue); font-weight: 800; }
 
-.filter-bar { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.2rem;}
+.filter-bar { display: flex; flex-wrap: wrap; gap: .45rem; }
 .filter-button { border: 1px solid var(--border); border-radius: .65rem; padding: .58rem .8rem; color: var(--navy); background: #eef4fb; font-weight: 750; }
 .task-list { display: grid; gap: .75rem; }
 .task-card { display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem; padding: 1rem; border: 1px solid var(--border); border-radius: .8rem; background: #f9fbfe; }
@@ -60,4 +60,12 @@ form > button, .filter-active { border: 0; border-radius: .65rem; padding: .72re
 .danger-button { flex: 0 0 auto; border: 0; border-radius: .55rem; padding: .55rem .75rem; color: var(--danger); background: #feeceb; font-weight: 800; }
 .empty-state { padding: 1.5rem; border: 2px dashed var(--border); border-radius: .8rem; text-align: center; color: var(--muted); }
 
+@media (min-width: 48rem) {
+  .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .workspace-grid { grid-template-columns: minmax(17rem, .75fr) minmax(0, 1.4fr); }
+  .section-heading { flex-direction: row; align-items: center; justify-content: space-between; }
+}
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}

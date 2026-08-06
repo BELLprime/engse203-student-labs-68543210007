@@ -37,7 +37,7 @@ function App() {
 
   return (
     <>
-      <AppHeader title="Study Task Board" subtitle="CP06 — Responsive UI และ Accessibility" />
+      <AppHeader title="Study Task Board" subtitle="CP07— Final Verification และ LAB 4 Bridge" />
       <main className="container page-content">
         <SummaryPanel summary={summary} />
         <div className="workspace-grid">

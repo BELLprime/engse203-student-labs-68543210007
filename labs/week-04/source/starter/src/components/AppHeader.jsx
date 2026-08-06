@@ -3,7 +3,7 @@ function AppHeader({ title, subtitle }) {
     <>
     <header className="hero">
       <div className="container">
-        <p className="eyebrow">ENGSE203 • PRE-LAB 04 • CP06</p>
+        <p className="eyebrow">ENGSE203 • PRE-LAB 04 • CP07</p>
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </div>
