@@ -10,7 +10,7 @@
 
 - Repository: [https://github.com/BELLprime/engse203-student-labs-68543210007](https://github.com/BELLprime/engse203-student-labs-68543210007)
 - Pull Request: [https://github.com/BELLprime/engse203-student-labs-68543210007/pull/5](https://github.com/BELLprime/engse203-student-labs-68543210007/pull/5)
-- GitHub Pages: [https://bellprime.github.io/engse203-student-labs-68543210007/](https://bellprime.github.io/engse203-student-labs-68543210007/)
+- GitHub Pages: [https://bellprime.github.io/engse203-student-labs-68543210007/labs/week-04/](https://bellprime.github.io/engse203-student-labs-68543210007/labs/week-04/)
 
 ## Component Tree
 
@@ -92,9 +92,12 @@ npm run preview
 
 ## Screenshots
 
-- Desktop: ![alt text](/labs/week-04/evidence/images/Desktop.png)
-- Mobile 375px: ![alt text](/labs/week-04/evidence/images/Mobile.png)
-- Validation/empty state: ![alt text](/labs/week-04/evidence/images/TC04.png), ![alt text](/labs/week-04/evidence/images/TC07.png)
+### Desktop: 
+![alt text](/labs/week-04/evidence/images/Desktop.png)
+### Mobile 375px: 
+![alt text](/labs/week-04/evidence/images/Mobile.png)
+### Validation/empty state: 
+![alt text](/labs/week-04/evidence/images/TC04.png), ![alt text](/labs/week-04/evidence/images/TC07.png)
 
 ## Week 03 → Week 04 Reflection
 

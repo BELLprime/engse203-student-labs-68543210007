@@ -47,5 +47,5 @@
 ---
 ## PR URL และ Pages URL
 - PR URL : [https://github.com/BELLprime/engse203-student-labs-68543210007/pull/5](https://github.com/BELLprime/engse203-student-labs-68543210007/pull/5)
-- Pages URL : [https://github.com/BELLprime/engse203-student-labs-68543210007/pull/5]
+- Pages URL : [https://bellprime.github.io/engse203-student-labs-68543210007/labs/week-04/](https://bellprime.github.io/engse203-student-labs-68543210007/labs/week-04/)
 ---
