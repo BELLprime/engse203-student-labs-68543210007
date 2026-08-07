@@ -1,32 +1,44 @@
-import AppHeader from './components/AppHeader.jsx';
-import SummaryPanel from './components/SummaryPanel.jsx';
-import RequestForm from './components/RequestForm.jsx';
-import FilterBar from './components/FilterBar.jsx';
-import RequestList from './components/RequestList.jsx';
-import { initialRequests } from './data/initialRequests.js';
+import AppHeader from "./components/AppHeader.jsx";
+import SummaryPanel from "./components/SummaryPanel.jsx";
+import RequestForm from "./components/RequestForm.jsx";
+import FilterBar from "./components/FilterBar.jsx";
+import RequestList from "./components/RequestList.jsx";
+import { initialRequests } from "./data/initialRequests.js";
+import { useState } from "react";
 
 function App() {
   // TODO LAB4-R04: เปลี่ยน requests/statusFilter เป็น state
-  const requests = initialRequests;
-  const statusFilter = 'all';
+  const [requests, setRequests] = useState(initialRequests);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   // TODO LAB4-R04: คำนวณ summary เป็น derived data
   const summary = {
     total: requests.length,
-    pending: 0,
-    inProgress: 0,
-    completed: 0,
+    pending: requests.filter((request) => request.status == "pending").length,
+    inProgress: requests.filter((request) => request.status == "inProgress").length,
+    completed: requests.filter((request) => request.status == "completed").length,
   };
 
   // TODO LAB4-R08: คำนวณ filteredRequests จาก requests + statusFilter
-  const filteredRequests = requests;
+  const filteredRequests = statusFilter === "all"
+      ? requests
+      : requests.filter((request) => request.status === statusFilter);
 
   function handleAddRequest(requestData) {
-    console.log('TODO add request', requestData);
+    console.log("TODO add request", requestData);
+    const newRequest = {
+      id: `REQUEST-${Date.now()}`,
+      ...requestData,
+      status: "pending",
+    };
+    setRequests((currRequest) => [newRequest, ...currRequest]);
   }
 
   function handleDeleteRequest(requestId) {
-    console.log('TODO delete request', requestId);
+    console.log("TODO delete request", requestId);
+    setRequests((currRequest) => 
+      currRequest.filter((request) => request.id !== requestId),
+    );
   }
 
   return (
@@ -56,4 +68,3 @@ function App() {
 }
 
 export default App;
-
