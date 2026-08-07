@@ -28,3 +28,9 @@ export const initialRequests = [
   },
 ];
 
+let requestCounter = initialRequests.length;
+
+export function generateRequestId() {
+  requestCounter += 1;
+  return `REQ-${String(requestCounter).padStart(3, "0")}`;
+}
