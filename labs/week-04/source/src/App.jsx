@@ -15,10 +15,8 @@ function App() {
   const summary = {
     total: requests.length,
     pending: requests.filter((request) => request.status == "pending").length,
-    inProgress: requests.filter((request) => request.status == "inProgress")
-      .length,
-    completed: requests.filter((request) => request.status == "completed")
-      .length,
+    inProgress: requests.filter((request) => request.status == "inProgress").length,
+    completed: requests.filter((request) => request.status == "completed").length,
   };
 
   // TODO LAB4-R08: คำนวณ filteredRequests จาก requests + statusFilter
@@ -34,7 +32,7 @@ function App() {
       ...requestData,
       status: "pending",
     };
-    setRequests((currRequest) => [newRequest, ...currRequest]);
+    setRequests((currRequest) => [...currRequest ,newRequest,]);
   }
 
   function handleDeleteRequest(requestId) {
