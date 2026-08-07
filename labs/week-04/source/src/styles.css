@@ -41,11 +41,36 @@ form > button, .filter-active { border: 0; border-radius: .6rem; padding: .65rem
 .request-id { font-weight: 800; }
 .request-card button { align-self: start; border: 0; border-radius: .5rem; padding: .5rem .7rem; color: var(--danger); background: #feeceb; }
 
+/* Focus Styles */
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible { outline: .2rem solid #f4b942; outline-offset: .15rem; }
+/* Invalid State Styles */
+[aria-invalid="true"] { border-color: var(--danger); }
+/* Badge Structure */
+.badge-row {display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 0.5rem;}
+.badge { display: inline-flex; border-radius: 999px; padding: .22rem .55rem; font-size: .78rem; font-weight: 800; }
+/* Status Colors */
+.status-pending { color: #7a4f01; background: #fff1c2; }
+.status-in-progress { color: #075985; background: #dff3ff; }
+.status-completed { color: #166534; background: #dcfce7; }
+/* Priority Colors */
+.priority-urgent { color: #991b1b; background: #fee2e2; }
+.priority-normal { color: var(--muted); background: #eef4fb; }
+/* Empty State */
+.empty-state { 
+  padding: 1.5rem; 
+  border: 2px dashed var(--border); 
+  border-radius: .8rem; 
+  text-align: center; 
+  color: var(--muted); 
+}
+
 @media (min-width: 52rem) {
   .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .workspace-grid { grid-template-columns: minmax(18rem, .78fr) minmax(0, 1.35fr); }
   .section-heading { flex-direction: row; justify-content: space-between; align-items: center; }
 }
-
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
 /* TODO LAB4-R12: เพิ่ม focus-visible, aria-invalid และ state/badge styles */
 
