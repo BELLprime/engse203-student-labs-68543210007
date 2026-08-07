@@ -32,7 +32,7 @@ function App() {
       ...requestData,
       status: "pending",
     };
-    setRequests((currRequest) => [...currRequest ,newRequest,]);
+    setRequests((currRequest) => [newRequest, ...currRequest]);
   }
 
   function handleDeleteRequest(requestId) {
