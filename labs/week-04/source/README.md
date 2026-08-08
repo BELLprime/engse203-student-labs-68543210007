@@ -77,18 +77,18 @@ npm run preview
 
 | Test ID | Actual Result | Pass/Fail | Evidence/Screenshot |
 |---|---|---|---|
-| TC-01 Initial | โหลดหน้าแรกแสดง 3 คำร้องเริ่มต้นจาก `initialRequests.js` (REQ-001, REQ-002, REQ-003) และ Summary แสดง total ถูกต้อง | TODO | ![alt text](/labs/week-04/evidence/images/TC01.png) |
-| TC-02 Controlled input | พิมพ์ในทุก field (`requesterName`, `location`, `details`) แล้วค่าปรากฏใน state ทันที (`value` ผูกกับ `formData`) ยืนยันด้วย React DevTools | TODO | ![alt text](/labs/week-04/evidence/images/TC02.png) |
-| TC-03 Invalid | Submit ฟอร์มเปล่า/ข้อมูลไม่ครบ → error message แสดงใต้แต่ละ field ตรงกับ `validateRequest()`, ฟอร์มไม่ reset และไม่เพิ่มรายการใหม่ | TODO | ![alt text](/labs/week-04/evidence/images/TC03.png) |
-| TC-04 Valid add | กรอกครบและถูกต้อง → รายการใหม่ถูกเพิ่มเข้า list, ฟอร์ม reset กลับเป็นค่าเริ่มต้น, feedback ขึ้นข้อความ "เพิ่มรายการสำเร็จ" | TODO | ![alt text](/labs/week-04/evidence/images/TC04.png)` |
-| TC-05 Filter | คลิกปุ่มกรองสถานะ (เช่น "รอดำเนินการ") → `RequestList` แสดงเฉพาะ request ที่ status ตรงกัน | TODO | ![alt text](/labs/week-04/evidence/images/TC05.png) |
-| TC-06 All | คลิกปุ่ม "ทั้งหมด" → กลับมาแสดงครบทุก request อีกครั้ง | TODO | ![alt text](/labs/week-04/evidence/images/TC06.png) |
-| TC-07 Empty | กรองสถานะที่ไม่มีข้อมูล → แสดง empty state "ยังไม่มีรายการในสถานะนี้" แทนลิสต์ว่างเปล่า | TODO | ![alt text](/labs/week-04/evidence/images/TC07.png) |
-| TC-08 Delete | กดปุ่ม "ลบ" ที่การ์ด → รายการหายไปจากลิสต์ทันที และ summary count ลดลงตาม | TODO | ![alt text](/labs/week-04/evidence/images/TC08.png) |
-| TC-09 Mobile | ทดสอบที่ 375px → เป็นหนึ่งคอลัมน์ ไม่มี horizontal scroll, ปุ่ม/ฟอร์มกดง่าย | TODO | ![alt text](/labs/week-04/evidence/images/TC09.png) |
-| TC-10 Keyboard | Tab ไล่ลำดับ field ได้ครบ, focus-visible เห็นชัด (outline สีเหลือง), radio ใช้ลูกศรเลือกได้ | TODO | ![alt text](/labs/week-04/evidence/images/TC10.png) |
-| TC-11 Build | `npm run check` และ `npm run build` ผ่านโดยไม่มี error/warning, ไม่มี React key warning ใน console | TODO | ![alt text](/labs/week-04/evidence/images/TC11.png) |
-| TC-12 Pages | เปิด GitHub Pages URL ใน Incognito → หน้าเว็บโหลดและทำงานได้ครบ ไม่มี asset 404 | TODO | ![alt text](/labs/week-04/evidence/images/TC12.png) |
+| TC-01 Initial | โหลดหน้าแรกแสดง 3 คำร้องเริ่มต้นจาก `initialRequests.js` (REQ-001, REQ-002, REQ-003) และ Summary แสดง total ถูกต้อง | Pass | ![alt text](/labs/week-04/evidence/images/TC01.png) |
+| TC-02 Controlled input | พิมพ์ในทุก field (`requesterName`, `location`, `details`) แล้วค่าปรากฏใน state ทันที (`value` ผูกกับ `formData`) ยืนยันด้วย React DevTools | Pass | ![alt text](/labs/week-04/evidence/images/TC02.png) |
+| TC-03 Invalid | Submit ฟอร์มเปล่า/ข้อมูลไม่ครบ → error message แสดงใต้แต่ละ field ตรงกับ `validateRequest()`, ฟอร์มไม่ reset และไม่เพิ่มรายการใหม่ | Pass | ![alt text](/labs/week-04/evidence/images/TC03.png) |
+| TC-04 Valid add | กรอกครบและถูกต้อง → รายการใหม่ถูกเพิ่มเข้า list, ฟอร์ม reset กลับเป็นค่าเริ่มต้น, feedback ขึ้นข้อความ "เพิ่มรายการสำเร็จ" | Pass | ![alt text](/labs/week-04/evidence/images/TC04.png)` |
+| TC-05 Filter | คลิกปุ่มกรองสถานะ (เช่น "รอดำเนินการ") → `RequestList` แสดงเฉพาะ request ที่ status ตรงกัน | Pass | ![alt text](/labs/week-04/evidence/images/TC05.png) |
+| TC-06 All | คลิกปุ่ม "ทั้งหมด" → กลับมาแสดงครบทุก request อีกครั้ง | Pass | ![alt text](/labs/week-04/evidence/images/TC06.png) |
+| TC-07 Empty | กรองสถานะที่ไม่มีข้อมูล → แสดง empty state "ยังไม่มีรายการในสถานะนี้" แทนลิสต์ว่างเปล่า | Pass | ![alt text](/labs/week-04/evidence/images/TC07.png) |
+| TC-08 Delete | กดปุ่ม "ลบ" ที่การ์ด → รายการหายไปจากลิสต์ทันที และ summary count ลดลงตาม | Pass | ![alt text](/labs/week-04/evidence/images/TC08.png) |
+| TC-09 Mobile | ทดสอบที่ 375px → เป็นหนึ่งคอลัมน์ ไม่มี horizontal scroll, ปุ่ม/ฟอร์มกดง่าย | Pass | ![alt text](/labs/week-04/evidence/images/TC09.png) |
+| TC-10 Keyboard | Tab ไล่ลำดับ field ได้ครบ, focus-visible เห็นชัด (outline สีเหลือง), radio ใช้ลูกศรเลือกได้ | Pass | ![alt text](/labs/week-04/evidence/images/TC10.png) |
+| TC-11 Build | `npm run check` และ `npm run build` ผ่านโดยไม่มี error/warning, ไม่มี React key warning ใน console | Pass | ![alt text](/labs/week-04/evidence/images/TC11.png) |
+| TC-12 Pages | เปิด GitHub Pages URL ใน Incognito → หน้าเว็บโหลดและทำงานได้ครบ ไม่มี asset 404 | Pass | ![alt text](/labs/week-04/evidence/images/TC12.png) |
 
 ## Screenshots
 
