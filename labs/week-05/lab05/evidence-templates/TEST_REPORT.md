@@ -127,10 +127,12 @@
 {"schemaVersion":1,"updatedAt":"2026-08-13T00:00:00.000Z","requests":[
 {"id":"REQ-001","requesterName":"ทดสอบ หนึ่ง","requestType":"แจ้งซ่อม","location":"A","details":"รายละเอียดยาวพอสมควร","priority":"normal","status":"pending"},
 {"id":"REQ-001","requesterName":"ทดสอบ สอง","requestType":"แจ้งซ่อม","location":"B","details":"รายละเอียดยาวพอสมควร","priority":"normal","status":"pending"}]} 
+```
 
 ## ภาคผนวก · ภาพหน้าจอที่ต้องมีครบ 10 ภาพ
 
-เก็บไว้ใน `labs/week-05/evidence/images/`
+เก็บไว้ใน `labs/week-05/evidence/images/ 
+
 
 | # | ชื่อไฟล์ | จาก | คาบ |
 |---|---|---|---|
