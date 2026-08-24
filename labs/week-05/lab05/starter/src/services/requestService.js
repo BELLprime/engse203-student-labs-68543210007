@@ -126,9 +126,58 @@ async function loadNormalRequests(onRecovery) {
  *   4. status เริ่มต้นเป็น 'pending' เสมอ
  *   5. persist แล้วคืน object ใหม่
  */
+export async function getRequests(options = {}) {
+  await waitForLabDelay();
+
+  if (options.scenario === 'error') {
+    throw new Error('LAB scenario: จำลองการโหลดข้อมูลไม่สำเร็จ');
+  }
+  if (options.scenario === 'empty') {
+    return [];
+  }
+
+  //return fetchSeedRequests();
+  return loadNormalRequests(options.onRecovery);
+
+  // TODO 5B-3: เปลี่ยนบรรทัดข้างบนเป็น return loadNormalRequests(options.onRecovery);
+}
+function readText(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function validateRequestInput(input) {
+  if (!input) throw new Error('ข้อมูลคำร้องไม่ถูกต้อง');
+  if (readText(input.requesterName).length < 2) throw new Error('ชื่อผู้แจ้งไม่ถูกต้อง');
+  if (!readText(input.requestType)) throw new Error('กรุณาเลือกประเภทคำร้อง');
+  if (!readText(input.location)) throw new Error('กรุณาระบุสถานที่');
+  if (readText(input.details).length < 10) throw new Error('รายละเอียดต้องมีอย่างน้อย 10 ตัวอักษร');
+  if (!['normal', 'urgent'].includes(input.priority)) throw new Error('ความเร่งด่วนไม่ถูกต้อง');
+}
+
+function createRequestId(requests) {
+  let id;
+  do {
+    const time = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).slice(2, 6).toUpperCase();
+    id = `REQ-
+time-{random}`;
+  } while (requests.some((request) => request.id === id));
+  return id;
+}
 export async function addRequest(requestInput) {
-  void requestInput;
-  throw new Error('TODO 5B-4: addRequest');
+  validateRequestInput(requestInput);
+  const requests = await getRequests();
+  const newRequest = {
+    id: createRequestId(requests),
+    requesterName: requestInput.requesterName.trim(),
+    requestType: requestInput.requestType,
+    location: requestInput.location.trim(),
+    details: requestInput.details.trim(),
+    priority: requestInput.priority,
+    status: 'pending',
+  };
+  writeStoredRequests([...requests, newRequest]);
+  return structuredClone(newRequest);
 }
 
 /**
@@ -136,8 +185,10 @@ export async function addRequest(requestInput) {
  * ใช้ .filter() สร้าง array ใหม่ อย่าแก้ array เดิม แล้ว persist
  */
 export async function deleteRequest(requestId) {
-  void requestId;
-  throw new Error('TODO 5B-5: deleteRequest');
+  const requests = await getRequests();
+  const nextRequests = requests.filter((request) => request.id !== requestId);
+  writeStoredRequests(nextRequests);
+  return structuredClone(nextRequests);
 }
 
 /**
@@ -145,5 +196,9 @@ export async function deleteRequest(requestId) {
  * ล้างคีย์ของ LAB05 แล้วโหลด seed ใหม่ทับ
  */
 export async function resetRequests() {
-  throw new Error('TODO 5B-6: resetRequests');
+  clearStoredRequests();    
+  const seedRequests = await fetchSeedRequests();
+  writeStoredRequests(seedRequests);
+  return structuredClone(seedRequests);
 }
+

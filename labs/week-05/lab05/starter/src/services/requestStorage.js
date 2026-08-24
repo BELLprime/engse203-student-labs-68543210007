@@ -87,7 +87,7 @@ export function writeStoredRequests(requests) {
   const envelope = JSON.stringify({ 
     schemaVersion: SCHEMA_VERSION,
     updatedAt: new Date().toISOString(),
-    requests: [...requests]
+    requests: structuredClone(requests),
   });
   //เก็บข้อมูลลง localStorage
   localStorage.setItem(STORAGE_KEY, envelope); 
