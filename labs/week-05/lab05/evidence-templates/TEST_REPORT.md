@@ -1,37 +1,114 @@
-# ENGSE203 LAB05 — Student Test Report
+# ENGSE203 LAB 05 — รายงานผลการทดสอบ
 
-**ชื่อ–รหัส:** TODO  
-**OS / Browser / Node:** TODO  
-**Branch / Commit:** `lab/week-05` / TODO
+**ชื่อ–รหัส:** นายณัฏฐกิตติ์  รอเรือน
+**Branch:** `lab/week-05` · **Commit:** `983d6ba`
+**ระบบปฏิบัติการ:** Windows 11 · **เบราว์เซอร์:** Microsoft Edge
+**Node version:** v22.23.1 
+**วันที่ทดสอบ:** 24 สิงหาคม 2026
 
-กรอก Actual result จากการรันจริง ใช้ `PASS`, `FAIL` หรือ `NOT RUN` และอ้างหลักฐานแบบ relative path
+---
 
-| Test ID | Preconditions / procedure summary | Actual result | Status | Evidence / Notes |
-|---|---|---|---|---|
-| TC-L5-01 | เปิด `#/` | TODO | NOT RUN | |
-| TC-L5-02 | ใช้ navigation 3 รายการ | TODO | NOT RUN | |
-| TC-L5-03 | เปิด/refresh `#/requests/new` | TODO | NOT RUN | |
-| TC-L5-04 | เปิด `#/requests/REQ-001` | TODO | NOT RUN | `images/route-detail-found.png` |
-| TC-L5-05 | เปิด `#/requests/REQ-999` | TODO | NOT RUN | |
-| TC-L5-06 | เปิด `#/unknown` | TODO | NOT RUN | `images/route-not-found.png` |
-| TC-L5-07 | ลบ LAB05 key แล้วเปิด Dashboard | TODO | NOT RUN | |
-| TC-L5-08 | สังเกตช่วง latency | TODO | NOT RUN | `images/state-loading.png` |
-| TC-L5-09 | เปิด `#/?scenario=error` | TODO | NOT RUN | `images/state-error-retry.png` |
-| TC-L5-10 | กด Retry | TODO | NOT RUN | |
-| TC-L5-11 | เปิด `#/?scenario=empty` | TODO | NOT RUN | `images/state-empty.png` |
-| TC-L5-12 | รัน public checker | TODO | NOT RUN | command summary |
-| TC-L5-13 | submit form ผิด validation | TODO | NOT RUN | |
-| TC-L5-14 | เพิ่ม valid request แล้ว refresh | TODO | NOT RUN | `images/persistence-add-refresh.png` |
-| TC-L5-15 | ทดสอบ filters ทุกค่า | TODO | NOT RUN | |
-| TC-L5-16 | ลบ request แล้ว refresh | TODO | NOT RUN | `images/persistence-delete-refresh.png` |
-| TC-L5-17 | Reset Demo Data | TODO | NOT RUN | |
-| TC-L5-18 | malformed + wrong schema แล้ว reload | TODO | NOT RUN | `images/storage-recovery.png` |
-| TC-L5-19 | เทียบ summary กับ data | TODO | NOT RUN | |
-| TC-L5-20 | viewport 375px ทุก page | TODO | NOT RUN | `images/responsive-375.png` |
-| TC-L5-21 | keyboard only | TODO | NOT RUN | |
-| TC-L5-22 | checker/build/preview | TODO | NOT RUN | command summary |
-| TC-L5-23 | Pages Incognito + hash refresh | TODO | NOT RUN | `images/pages-incognito.png` + URL |
-| TC-L5-24 | merged PR + tag | TODO | NOT RUN | PR URL + commit/tag |
+## วิธีกรอก — อ่านก่อนเริ่ม
+
+| ช่อง | กรอกอะไร |
+|---|---|
+| **ผลจริง** | สิ่งที่<strong>เห็นจริง</strong>บนหน้าจอ ไม่ใช่สิ่งที่ควรเห็น |
+| **สถานะ** | `PASS` · `FAIL` · `NOT RUN` |
+| **หลักฐาน** | ชื่อไฟล์ภาพหรือหมายเหตุเพิ่มเติม |
+
+> **ถ้าทดสอบแล้วไม่ผ่าน ให้เขียน `FAIL` พร้อมสิ่งที่เห็นจริง** อย่าเขียนว่าผ่านทั้งที่ยังไม่ได้ทดสอบ
+>
+> รายงานที่เขียนย้อนหลังจะเป็น `PASS` ทั้งหมดเสมอ ซึ่งไม่มีคุณค่าอะไรเลย · ในการทำงานจริง รายงานแบบนี้คือสิ่งที่ทำให้คนอื่นเชื่อได้ว่างานของคุณผ่านการตรวจสอบมาแล้ว
+>
+> **กรอกทีละ checkpoint** อย่ากองไว้ทำทีเดียวตอนท้าย เพราะพอถึงตอนนั้นคุณจะจำไม่ได้แล้วว่าเห็นอะไร
+
+**เงื่อนไขเริ่มต้นของทุกข้อ** — รัน `npm run dev` แล้วเปิด URL ที่แสดง เว้นแต่ระบุเป็นอย่างอื่น
+
+---
+
+## คาบ 5A · CP02 — Routing
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-01** | เปิด `#/` | Dashboard แสดงแผงสรุปและรายการคำร้อง | แสดงหน้า Dashboard พร้อมกราฟิกสรุปและรายการคำร้องที่เตรียมไว้ | PASS | |
+| **TC-L5-02** | กดเมนู Dashboard → New Request → About ทีละปุ่ม · เปิด DevTools แท็บ Network ค้างไว้ | เปลี่ยนหน้าทั้ง 3 ครั้ง · **ไม่มีไฟล์ `.html` ถูกโหลดใหม่** · ปุ่มที่ active ตรงกับหน้าปัจจุบัน | เปลี่ยนหน้าได้ทันที ไม่มี HTML โหลดใหม่ (SPA) เมนูสีเข้มสอดคล้องกับหน้าปัจจุบัน | PASS | |
+| **TC-L5-03** | เปิด `#/requests/new` แล้วกด `F5` | หลัง refresh ยังอยู่หน้า New Request ไม่ใช่หน้า 404 | รีเฟรชแล้วฟอร์มไม่หายและไม่เจอหน้า 404 | PASS | |
+| **TC-L5-06** | เปิด `#/unknown` | หน้า NotFound **พร้อม header และ footer** + ลิงก์กลับ Dashboard | แสดงหน้า 404 NotFound พร้อม Layout ส่วนบนและล่างปกติ | PASS | ![alt route-not-found](images/route-not-found.png) |
+
+---
+
+## คาบ 5A · CP03 — Service และ Data Lifecycle
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-08** | เปิด `#/` แล้วสังเกตช่วงแรก · ถ้าถ่ายไม่ทันให้ตั้ง Network throttle เป็น Slow 3G | เห็นตัวบอกว่ากำลังโหลดก่อน แล้วรายการจึงขึ้น | มีหน้าต่างโหลด (Loading State) ขึ้นชั่วครู่ก่อนแสดงรายการ | PASS | ![alt state-loading](images/state-loading.png) |
+| **TC-L5-09** | เปิด `#/?scenario=error` | แถบบอกว่าอยู่ในโหมดทดสอบ + ข้อความผิดพลาดที่คนทั่วไปเข้าใจ + ปุ่มลองอีกครั้ง · **ไม่มี stack trace** | แสดงหน้า Error และปุ่ม Retry โดยไม่มีโค้ด Stack Error | PASS | ![alt state-error-retry](images/state-error-retry.png) |
+| **TC-L5-10** | จากข้อ 09 กดปุ่มลองอีกครั้ง | **URL เปลี่ยนกลับเป็น `#/`** แล้วโหลดรายการปกติ | URL กลับเป็นปกติ รายการถูกโหลดขึ้นมาสำเร็จ | PASS | |
+| **TC-L5-11** | เปิด `#/?scenario=empty` | ข้อความว่ายังไม่มีคำร้อง + ปุ่มไปหน้าสร้างใหม่ · **ไม่ใช่หน้าจอ error** | หน้าจอแจ้งว่ายังไม่มีคำร้อง (Empty State) ไม่ใช้กล่อง Error | PASS | ![alt state-empty](images/state-empty.png) |
+| **TC-L5-15** | เปลี่ยนตัวกรองครบทุกค่า — all, pending, in-progress, completed | รายการเปลี่ยนถูกต้องทุกค่า · **แผงสรุปไม่เปลี่ยน** เพราะนับจากข้อมูลทั้งหมด | ตารางกรองเฉพาะรายการที่ตรงกับประเภท แผงตัวเลขข้างบนยังแสดงครบทั้งหมด | PASS | |
+
+---
+
+## คาบ 5A · CP05a — Dynamic Detail
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-04** | เปิด `#/requests/REQ-001` | แสดงรายละเอียดที่ตรงกับรหัสนั้น | แสดงรายละเอียด Request-001 ตรงตามข้อมูลจริง | PASS | ![alt route-detail-found](images/route-detail-found.png) |
+| **TC-L5-05** | เปิด `#/requests/REQ-999` | ข้อความว่าไม่พบคำร้องรหัสนั้น + ลิงก์กลับ · **อยู่ในหน้า Detail ไม่ใช่หน้า NotFound และไม่ใช่หน้าจอ error** | โชว์ข้อความว่า Request Not Found ไม่เด้งไปหน้า 404 | PASS | |
+
+---
+
+## คาบ 5B · CP04a — Persistence
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-07** | DevTools → Application → Local Storage → ลบคีย์ `engse203-campus-requests-v1` → refresh | ข้อมูลตัวอย่างกลับมา และคีย์ถูกสร้างใหม่พร้อม envelope · **ไม่มีข้อความแจ้งว่ากู้ข้อมูล** เพราะเป็นการเปิดครั้งแรก | ข้อมูลเริ่มต้นสร้างใหม่ใน Local Storage โดยไม่มีหน้าต่างแจ้งเตือนซ่อมแซม | PASS | |
+| **TC-L5-13** | ส่งฟอร์มโดยเว้นบางช่อง แล้วลองใส่รายละเอียดสั้นกว่า 10 ตัวอักษร | ข้อความเตือนใต้ช่องที่ผิด · **ไม่ใช่ `TypeError` หรือข้อความภาษาโปรแกรมเมอร์** | แจ้งเตือนข้อความให้กรอกให้ครบตรงด้านล่างของช่อง Input | PASS | |
+| **TC-L5-14** | เพิ่มคำร้องที่กรอกครบ → เด้งไปหน้ารายละเอียด → กด `F5` | บันทึกสำเร็จ · **หน้ารายละเอียดแสดงข้อมูลจริง** · refresh แล้วคำร้องยังอยู่ | รีเฟรชหน้าต่างใหม่ข้อมูลคำร้องใหม่ยังคงอยู่และแสดงครบ | PASS | ![alt persistence-add-refresh](images/persistence-add-refresh.png) |
+| **TC-L5-16** | ลบคำร้องที่เพิ่งเพิ่ม → กด `F5` | หายจากรายการทันที และ **refresh แล้วไม่กลับมา** | รายการถูกลบหายไปจากหน้าจอและ Local Storage | PASS | ![alt persistence-delete-refresh](images/persistence-delete-refresh.png) |
+| **TC-L5-17** | กดปุ่ม Reset Demo Data → ยืนยัน | ข้อมูลตัวอย่างกลับมาครบ · ตัวกรองรีเซ็ตเป็น all · **ข้อมูลของเว็บอื่นในโดเมนเดียวกันไม่ถูกลบ** | ข้อมูลกลับมาเป็นค่าทดสอบตั้งต้น ตัวกรองกลับสู่สถานะเดิม | PASS | |
+
+---
+
+## คาบ 5B · CP04b — Recovery
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-18a** | ใน Local Storage วางค่า `{ ไม่ใช่ JSON` ทับคีย์ LAB05 → refresh | กู้ข้อมูลตัวอย่าง + **ข้อความแจ้งผู้ใช้** · ไม่มีหน้าจอขาว ไม่มี error ค้างใน Console | กู้ข้อมูลคืนค่าตั้งต้นสำเร็จและมีการแจ้งเตือนผู้ใช้ ไม่มีจอขาว | PASS | ![alt storage-recovery](images/storage-recovery.png) |
+| **TC-L5-18b** | วางค่า `{"schemaVersion":99,"requests":[]}` → refresh | กู้ได้เหมือนกัน · **จับด้วยการเทียบ SCHEMA_VERSION ไม่ใช่ try/catch** | กู้ข้อมูลคืนค่าตั้งต้นสำเร็จจาก Version Mismatch | PASS | |
+| **TC-L5-18c** | วาง envelope ที่มีคำร้อง `id` ซ้ำกัน 2 รายการ → refresh | กู้ได้เหมือนกัน · จับด้วย `validateRequests()` | กู้ข้อมูลคืนค่าตั้งต้นจากการตรวจสอบ Validation Id ซ้ำ | PASS | |
+
+---
+
+## คาบ 5B · CP05b — Regression จาก Week 04
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-19** | เพิ่มและลบคำร้องหลายรอบ แล้วเทียบตัวเลขในแผงสรุปกับจำนวนรายการที่นับด้วยตา | **ตัวเลขตรงกันทุกครั้ง** ทั้ง total, pending, in-progress, completed | ข้อมูลบนแผงสรุปคำนวณถูกต้องตามจำนวนรายการจริง | PASS | |
+
+---
+
+## คาบ 5B · CP06 — Verify และ Delivery
+
+| ID | ทำอะไร | ผลที่ควรได้ | ผลจริง | สถานะ | หลักฐาน |
+|---|---|---|---|---|---|
+| **TC-L5-20** | DevTools → Toggle device toolbar → ตั้งความกว้าง 375px → เปิดครบทุกหน้า | ไม่มีการเลื่อนแนวนอน · ปุ่มกดได้ไม่ทับกัน · ข้อความไม่ถูกตัด | Layout หน้าเว็บปรับตัวกับขนาดจอเล็กได้ ไม่ล้น | PASS | ![alt responsive-375](images/responsive-375.png) |
+| **TC-L5-21** | วางเมาส์ไว้ข้าง ๆ ใช้ `Tab` `Shift+Tab` `Enter` `Space` เท่านั้น | เข้าถึงทุกลิงก์ ปุ่ม และช่องกรอกได้ · **เห็นชัดตลอดว่าโฟกัสอยู่ที่ไหน** | เข้าถึงทุกเมนูได้ด้วยคีย์บอร์ด | PASS | |
+| **TC-L5-12** | `npm run check` | ผ่าน **133/133** | ผ่านครบทั้งหมด 133/133 (100%) | PASS | ![alt npm-run-check](images/npm-run-check.png) |
+| **TC-L5-22** | `npm run build` แล้ว `npm run preview` | build ไม่มี error · เปิด preview แล้ว refresh ที่ทุก URL ได้ | Build สำเร็จ เปิดพรีวิวแล้วรีเฟรชได้ปกติ | PASS | |
+| **TC-L5-23** | เปิด GitHub Pages **ในหน้าต่างส่วนตัว** แล้ว refresh ที่ URL ที่มี `#` | โหลดได้ทุกหน้า · refresh แล้วไม่ 404 · ข้อมูลตัวอย่างขึ้นเหมือนผู้ใช้ใหม่ | เปิด URL หน้าต่างๆ บน Incognito ได้และมีข้อมูลตัวอย่างครบ | PASS | `images/pages-incognito.png` |
+| **TC-L5-24** | เปิด Pull Request และติด tag `lab-05-submission-v1` | PR เปิดแล้ว · tag ถูก push ขึ้น remote | สั่งเปิด PR และลง Tag ใน Remote สำเร็จ | PASS | URL ของ PR |
+
+---
+
+## สรุปผล
+
+| | จำนวน |
+|---|---|
+| PASS | 24 |
+| FAIL | 0 |
+| NOT RUN | 0 |
+| **รวม** | **24** |
 
 ## Rerun log
 
@@ -39,4 +116,31 @@
 
 | Test ID | เวลา | Fix | Actual result | Status |
 |---|---|---|---|---|
-| TODO | TODO | TODO | TODO | TODO |
+| TC-L5-14 | 16:32 น. | แก้ไขบั๊ก Template Literal ตอนสร้าง ID (`requestService.js`) | สร้างคำร้องที่ 2 ได้ ไม่ค้างที่กำลังบันทึกแล้ว | PASS |
+
+
+## ภาคผนวก · ค่าสำหรับทดสอบ TC-L5-18c
+
+คัดลอกไปวางใน Local Storage เพื่อจำลองข้อมูลที่มี `id` ซ้ำ
+
+```json
+{"schemaVersion":1,"updatedAt":"2026-08-13T00:00:00.000Z","requests":[
+{"id":"REQ-001","requesterName":"ทดสอบ หนึ่ง","requestType":"แจ้งซ่อม","location":"A","details":"รายละเอียดยาวพอสมควร","priority":"normal","status":"pending"},
+{"id":"REQ-001","requesterName":"ทดสอบ สอง","requestType":"แจ้งซ่อม","location":"B","details":"รายละเอียดยาวพอสมควร","priority":"normal","status":"pending"}]} 
+
+## ภาคผนวก · ภาพหน้าจอที่ต้องมีครบ 10 ภาพ
+
+เก็บไว้ใน `labs/week-05/evidence/images/`
+
+| # | ชื่อไฟล์ | จาก | คาบ |
+|---|---|---|---|
+| 1 | `route-not-found.png` | TC-L5-06 | 5A |
+| 2 | `state-loading.png` | TC-L5-08 | 5A |
+| 3 | `state-error-retry.png` | TC-L5-09 | 5A |
+| 4 | `state-empty.png` | TC-L5-11 | 5A |
+| 5 | `route-detail-found.png` | TC-L5-04 | 5A |
+| 6 | `persistence-add-refresh.png` | TC-L5-14 | 5B |
+| 7 | `persistence-delete-refresh.png` | TC-L5-16 | 5B |
+| 8 | `storage-recovery.png` | TC-L5-18a | 5B |
+| 9 | `responsive-375.png` | TC-L5-20 | 5B |
+| 10 | `pages-incognito.png` | TC-L5-23 | หลังคาบ |
