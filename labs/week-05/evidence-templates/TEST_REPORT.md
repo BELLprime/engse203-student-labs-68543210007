@@ -1,7 +1,7 @@
 # ENGSE203 LAB 05 — รายงานผลการทดสอบ
 
 **ชื่อ–รหัส:** นายณัฏฐกิตติ์  รอเรือน
-**Branch:** `lab/week-05` · **Commit:** `983d6ba`
+**Branch:** `lab/week-05` · **Commit:** `2fdb5c6`
 **ระบบปฏิบัติการ:** Windows 11 · **เบราว์เซอร์:** Microsoft Edge
 **Node version:** v22.23.1 
 **วันที่ทดสอบ:** 24 สิงหาคม 2026
@@ -96,8 +96,8 @@
 | **TC-L5-21** | วางเมาส์ไว้ข้าง ๆ ใช้ `Tab` `Shift+Tab` `Enter` `Space` เท่านั้น | เข้าถึงทุกลิงก์ ปุ่ม และช่องกรอกได้ · **เห็นชัดตลอดว่าโฟกัสอยู่ที่ไหน** | เข้าถึงทุกเมนูได้ด้วยคีย์บอร์ด | PASS | |
 | **TC-L5-12** | `npm run check` | ผ่าน **133/133** | ผ่านครบทั้งหมด 133/133 (100%) | PASS | ![alt npm-run-check](images/npm-run-check.png) |
 | **TC-L5-22** | `npm run build` แล้ว `npm run preview` | build ไม่มี error · เปิด preview แล้ว refresh ที่ทุก URL ได้ | Build สำเร็จ เปิดพรีวิวแล้วรีเฟรชได้ปกติ | PASS | |
-| **TC-L5-23** | เปิด GitHub Pages **ในหน้าต่างส่วนตัว** แล้ว refresh ที่ URL ที่มี `#` | โหลดได้ทุกหน้า · refresh แล้วไม่ 404 · ข้อมูลตัวอย่างขึ้นเหมือนผู้ใช้ใหม่ | เปิด URL หน้าต่างๆ บน Incognito ได้และมีข้อมูลตัวอย่างครบ | PASS | `images/pages-incognito.png` |
-| **TC-L5-24** | เปิด Pull Request และติด tag `lab-05-submission-v1` | PR เปิดแล้ว · tag ถูก push ขึ้น remote | สั่งเปิด PR และลง Tag ใน Remote สำเร็จ | PASS | URL ของ PR |
+| **TC-L5-23** | เปิด GitHub Pages **ในหน้าต่างส่วนตัว** แล้ว refresh ที่ URL ที่มี `#` | โหลดได้ทุกหน้า · refresh แล้วไม่ 404 · ข้อมูลตัวอย่างขึ้นเหมือนผู้ใช้ใหม่ | เปิด URL หน้าต่างๆ บน Incognito ได้และมีข้อมูลตัวอย่างครบ | PASS | ![alt gitPage](images/gitPage.png) |
+| **TC-L5-24** | เปิด Pull Request และติด tag `lab-05-submission-v1` | PR เปิดแล้ว · tag ถูก push ขึ้น remote | สั่งเปิด PR และลง Tag ใน Remote สำเร็จ | PASS |  |
 
 ---
 
