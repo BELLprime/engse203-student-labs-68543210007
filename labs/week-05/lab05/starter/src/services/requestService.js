@@ -63,23 +63,6 @@ async function fetchSeedRequests() {
  *
  * ส่วน scenario error และ empty เขียนไว้ให้แล้ว ใช้ทดสอบ UI
  */
-export async function getRequests(options = {}) {
-  await waitForLabDelay();
-
-  //throw new Error('TODO 5A-2: getRequests normal flow');
-  if (options.scenario === 'error') {
-    throw new Error('LAB scenario: จำลองการโหลดข้อมูลไม่สำเร็จ');
-  }
-  if (options.scenario === 'empty') {
-    return [];
-  }
-
-  // TODO 5A-2: return fetchSeedRequests();
-  // TODO 5B-3: เปลี่ยนบรรทัดข้างบนเป็น return loadNormalRequests(options.onRecovery);
-  
-  //return fetchSeedRequests();
-  return loadNormalRequests(options.onRecovery);
-}
 
 /**
  * TODO 5A-3 · หาคำร้องใบเดียวตามรหัส
@@ -138,7 +121,6 @@ export async function getRequests(options = {}) {
 
   //return fetchSeedRequests();
   return loadNormalRequests(options.onRecovery);
-
   // TODO 5B-3: เปลี่ยนบรรทัดข้างบนเป็น return loadNormalRequests(options.onRecovery);
 }
 function readText(value) {
