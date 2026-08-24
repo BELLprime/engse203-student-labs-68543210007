@@ -24,16 +24,21 @@ function DashboardPage() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
+    let ignore = false//flag
     setLoadState("loading");
     setErrorMessage("");
     setNotice("");
 
     getRequests({ scenario, onRecovery: setNotice })
       .then((data) => {
+        // เช็คว่าถ้าผู้ใช้กดเปลี่ยนหน้าไปแล้ว ให้หยุดทำงานทันที (ทิ้งข้อมูลไป)
+        if (ignore) return;
         setRequests(data);
         setLoadState("success");
       })
       .catch((error) => {
+        // ถ้าดึงข้อมูลพลาด 
+        if (ignore) return;
         setErrorMessage(
           error instanceof Error
             ? error.message
@@ -41,7 +46,10 @@ function DashboardPage() {
         );
         setLoadState("error");
       });
-
+    // Cleanup function จะทำงานตอนที่ Component ถูกทำลาย (ผู้ใช้ออกจากหน้า)
+    return () => {
+      ignore = true;
+    };
     // TODO 5B: เพิ่ม cleanup guard เพื่อกัน stale update
   }, [scenario, reloadKey]);
 
