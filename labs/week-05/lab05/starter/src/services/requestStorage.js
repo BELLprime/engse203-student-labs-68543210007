@@ -53,6 +53,7 @@ function validateRequests(requests) {
  * ห้าม throw ออกไปจากฟังก์ชันนี้ เพราะจะทำให้หน้าจอพังทั้งหน้า
  */
 export function readStoredRequests() {
+  
   throw new Error('TODO 5B-A: readStoredRequests');
 }
 
@@ -62,11 +63,20 @@ export function readStoredRequests() {
  *   1. ตรวจด้วย validateRequests() ก่อน ถ้าไม่ผ่านให้ throw
  *      (ที่นี่ throw ได้ เพราะเป็นความผิดพลาดของโปรแกรมเราเอง ไม่ใช่ข้อมูลจากภายนอก)
  *   2. เขียน envelope ที่มี schemaVersion, updatedAt และ requests
- *   3. อย่าลืมว่าที่เก็บรับได้แต่ข้อความ
+ *   3. อย่าลืมว่าที่เก็บรับได้แต่ข้อความ --> stringify() ก่อน
  */
 export function writeStoredRequests(requests) {
-  void requests;
-  throw new Error('TODO 5B-B: writeStoredRequests');
+  //ตรวจด้วย validateRequests() ก่อน ถ้าไม่ผ่านให้ throw
+  if (!validateRequests(requests))  
+    throw new Error('ข้อมูลคำร้องไม่ถูกต้อง ไม่สามารถบันทึกได้');
+  //envelope and stringify()
+  const envelope = JSON.stringify({ 
+    schemaVersion: SCHEMA_VERSION,
+    updatedAt: new Date().toISOString(),
+    requests: [...requests]
+  });
+  //เก็บข้อมูลลง localStorage
+  localStorage.setItem(STORAGE_KEY, envelope); 
 }
 
 /**
