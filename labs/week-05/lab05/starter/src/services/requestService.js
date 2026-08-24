@@ -144,8 +144,7 @@ function createRequestId(requests) {
   do {
     const time = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).slice(2, 6).toUpperCase();
-    id = `REQ-
-time-{random}`;
+    id = `REQ-${time}-${random}`;
   } while (requests.some((request) => request.id === id));
   return id;
 }
