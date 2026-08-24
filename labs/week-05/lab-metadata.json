@@ -1,0 +1,12 @@
+{
+  "week": "week-05",
+  "title": "React Campus Service Request",
+  "status": "submitted",
+  "sourceOrigin": "https://github.com/BELLprime/engse203-student-labs-68543210007/tree/lab/week-05",
+  "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
+  "originalCommit": "2fdb5c6d830989921ba04ed6cd302124731fd703",
+  "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/6",
+  "submissionTag": "lab-05-submission-v1",
+  "testStatus": "pass",
+  "notes": "ทำโจทย์ 5A และ 5B ครบถ้วน, แก้ไขบั๊ก Template Literal ในการสร้าง ID, จัดการ Persistence และทำ Cleanup Guard เรียบร้อยผ่าน 133/133"
+}
