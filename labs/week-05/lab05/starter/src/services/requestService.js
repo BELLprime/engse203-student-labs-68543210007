@@ -106,11 +106,14 @@ export async function getRequestById(requestId) {
  *   5. คืนข้อมูล seed
  */
 async function loadNormalRequests(onRecovery) {
-  const stored = await readStoredRequests();
-  if (stored.status === 'valid') 
-    return fetchSeedRequests();
-  else 
-    throw new Error('TODO 5B-2: loadNormalRequests');
+  const stored = readStoredRequests();
+  if (stored.status === 'valid') return stored.requests;
+
+  const seed = await fetchSeedRequests();
+  writeStoredRequests(seed);
+  // TODO 5B-2b: แจ้งผู้ใช้เมื่อกู้ข้อมูลจากของเสีย (ทำใน CP04b)
+  
+  return seed;
 }
 
 /**

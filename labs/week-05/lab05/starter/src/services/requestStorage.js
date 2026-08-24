@@ -53,8 +53,22 @@ function validateRequests(requests) {
  * ห้าม throw ออกไปจากฟังก์ชันนี้ เพราะจะทำให้หน้าจอพังทั้งหน้า
  */
 export function readStoredRequests() {
-  
-  throw new Error('TODO 5B-A: readStoredRequests');
+  const storedData = localStorage.getItem(STORAGE_KEY);
+  if (storedData===null) return{ status: 'missing' };
+  try {
+    const parse = JSON.parse(storedData);
+    // TODO 5B-A2: ตรวจ schemaVersion และ validateRequests ให้ครบใน CP04b
+    if (parse.schemaVersion !== SCHEMA_VERSION) {
+      return { status: 'invalid', reason: 'schemaVersion ไม่ตรงกับที่โปรแกรมคาดหวัง' };
+    }
+    if (!validateRequests(parse.requests)) {
+      return { status: 'invalid', reason: 'ข้อมูลคำร้องไม่ถูกต้อง' };
+    }
+    //คืนสำเนาด้วย structuredClone()
+    return { status: 'valid', requests: structuredClone(parse.requests) };
+  } catch {
+    return { status: 'invalid', reason: 'ข้อมูลที่บันทึกไว้ไม่ใช่ JSON ที่อ่านได้' };
+  }
 }
 
 /**
