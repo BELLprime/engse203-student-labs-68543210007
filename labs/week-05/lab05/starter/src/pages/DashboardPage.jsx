@@ -28,7 +28,7 @@ function DashboardPage() {
     setErrorMessage("");
     setNotice("");
 
-    getRequests({ scenario })
+    getRequests({ scenario, onRecovery: setNotice })
       .then((data) => {
         setRequests(data);
         setLoadState("success");

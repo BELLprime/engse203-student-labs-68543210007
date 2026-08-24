@@ -73,7 +73,7 @@ async function fetchSeedRequests() {
  */
 export async function getRequestById(requestId) {
   const requests = await getRequests();
-    return requests.find((request) => request.id === requestId) ?? null;
+  return requests.find((request) => request.id === requestId) ?? null;
 }
 
 /* ─────────── คาบ 5B ─────────── */
@@ -91,11 +91,14 @@ export async function getRequestById(requestId) {
 async function loadNormalRequests(onRecovery) {
   const stored = readStoredRequests();
   if (stored.status === 'valid') return stored.requests;
+  else if (stored.status === 'invalid') 
+    onRecovery?.('พบข้อมูลเดิมที่อ่านไม่ได้ ระบบจึงกู้ข้อมูลตัวอย่างให้แล้ว');
 
   const seed = await fetchSeedRequests();
   writeStoredRequests(seed);
   // TODO 5B-2b: แจ้งผู้ใช้เมื่อกู้ข้อมูลจากของเสีย (ทำใน CP04b)
-  
+
+
   return seed;
 }
 
@@ -178,7 +181,7 @@ export async function deleteRequest(requestId) {
  * ล้างคีย์ของ LAB05 แล้วโหลด seed ใหม่ทับ
  */
 export async function resetRequests() {
-  clearStoredRequests();    
+  clearStoredRequests();
   const seedRequests = await fetchSeedRequests();
   writeStoredRequests(seedRequests);
   return structuredClone(seedRequests);
