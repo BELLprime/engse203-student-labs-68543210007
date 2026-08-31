@@ -6,7 +6,7 @@ import LoadingState from '../components/LoadingState.jsx';
 import RequestList from '../components/RequestList.jsx';
 import SummaryPanel from '../components/SummaryPanel.jsx';
 import useManualReload from '../hooks/useManualReload.js';
-import { deleteRequest, getRequests, resetRequests } from '../services/requestService.js';
+import { deleteRequest, getRequests, resetRequests ,updateRequestStatus } from '../services/requestService.js';
 
 function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -75,6 +75,18 @@ function DashboardPage() {
     }
   }
 
+  async function handleMarkDone(requestId) {
+  try {
+    // เรียก Service เพื่อเปลี่ยนสถานะเป็น completed และบันทึกลง LocalStorage
+    const nextRequests = await updateRequestStatus(requestId, 'completed');
+    // อัปเดตข้อมูลบนหน้าจอให้แผงสรุปคำนวณใหม่
+    setRequests(nextRequests);
+    setNotice(`เปลี่ยนสถานะคำร้อง ${requestId} เป็นเสร็จสิ้นแล้ว`);
+  } catch (error) {
+    setNotice(error instanceof Error ? error.message : 'อัปเดตสถานะไม่สำเร็จ');
+  }
+}
+
   async function handleReset() {
     if (!window.confirm('ต้องการคืนข้อมูลตัวอย่างเริ่มต้นหรือไม่?')) return;
     try {
@@ -119,7 +131,7 @@ function DashboardPage() {
             {filteredRequests.length === 0 ? 
               <p style={{ textAlign: 'center', padding: '2rem 0' }}>ไม่พบคำร้องที่ตรงกับการค้นหา</p>
               : 
-              <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+              <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} onMarkDone={handleMarkDone}/>
             }
           </section>
         </>
