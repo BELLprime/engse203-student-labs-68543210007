@@ -12,7 +12,7 @@ function RequestCard({ request, onDeleteRequest , onMarkDone }) {
         {/* TODO B4: แทน {request.priority} ด้านล่างด้วย <PriorityBadge priority={request.priority} /> ที่คุณสร้าง */}
         <p><span className={`badge ${request.status}`}>{request.status}</span> · <PriorityBadge priority={request.priority} /></p>
       </div>
-      <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', marginTop: '16px', alignItems: 'flex-start' }}>
         {request.status !== 'completed' && (
           <button className="button primary" type="button" onClick={() => onMarkDone(request.id)}>
             ทำเสร็จ
