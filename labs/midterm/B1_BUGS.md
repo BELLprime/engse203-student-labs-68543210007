@@ -1,35 +1,38 @@
-# B1 · บันทึกการแก้บั๊ก (กรอกให้ครบทั้ง 6 จุด)
+# B1 · บันทึกการแก้บั๊ก 6 จุด — สอบกลางภาค ENGSE203
 
-> แต่ละบั๊กให้เขียน 4 อย่าง: ไฟล์ · บรรทัด · สาเหตุ (ทำไมทำงานผิด) · แก้อย่างไร
-> เขียนด้วยคำของตัวเอง — จุดนี้จะถูกถามใน oral
+**ชื่อ–นามสกุล:**นายณัฏฐกิตติ์ รอดเรือน **รหัส:** 68543210007-9 **Sec:** 1 **ชุด:** A
 
-## บั๊กที่ 1 — อาการ: Console เตือนสีเหลืองเรื่องรายการ
-- ไฟล์/บรรทัด: src/components/RequestList.jsx บรรทัด 9 .map()
-- สาเหตุ: Each child in a list should have a unique "key" prop. ไม่ได้ใส่ key
-- แก้อย่างไร: เพิ่ม key={request.id} เข้าไป
+---
 
-## บั๊กที่ 2 — อาการ: ตัวเลข "รอดำเนินการ" ในแผงสรุปไม่ตรงกับที่เห็น
-- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 47
-- สาเหตุ: มีการใช้ request.status === 'completed' แทนที่จะเป็น pending 
-pending: requests.filter((request) => request.status === 'completed').length,
-- แก้อย่างไร: เปลี่ยน completed to pending
+## วิธีกรอก (อ่านก่อนเริ่ม)
 
-## บั๊กที่ 3 — อาการ: กดตัวกรอง "รอดำเนินการ" แล้วได้รายการที่ไม่ใช่
-- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 55
-- สาเหตุ: request.status !== statusFilter เงื่อนไขกรองใน DashboardPage.jsx ไม่ถูกต้อง
-- แก้อย่างไร: request.status === statusFilter
+กรอกให้ครบ **ทั้ง 6 บั๊ก** · แต่ละบั๊กเขียน 3 อย่างด้วย **คำของตัวเอง** (จะถูกสุ่มถามใน oral)
 
-## บั๊กที่ 4 — อาการ: เปลี่ยน URL จาก REQ-001 เป็น REQ-002 แล้วข้อมูลไม่เปลี่ยน
-- ไฟล์/บรรทัด: src/pages/RequestDetailPage.jsx บรรทัด 28
-- สาเหตุ: ไม่ได้มีการใช้ requestId ที่เป็น useParams() ทำให้หา requestId ไม่เจอ และไม่รัน useEffect
-- แก้อย่างไร: เพิ่ม requestId ใน array [ requestId,reloadKey ] 
+| คอลัมน์ | ใส่อะไร | ตัวอย่างสิ่งที่เขียน *(บั๊กสมมติ)* |
+|---|---|---|
+| **ไฟล์ : บรรทัด** | ไฟล์ที่แก้ + เลขบรรทัด | `Foo.jsx : 12` |
+| **สาเหตุ** | **ทำไม** มันทำงานผิด (ไม่ใช่แค่ "พิมพ์ผิด") | "ใส่วงเล็บท้ายชื่อฟังก์ชัน เลยถูกเรียกทันทีตอน render" |
+| **แก้อย่างไร** | เปลี่ยน**จากอะไร**เป็น**อะไร** | "เอาวงเล็บออก จาก `onClick={fn()}` เป็น `onClick={fn}`" |
 
-## บั๊กที่ 5 — อาการ: กด "ลบ" แล้วรายการยังอยู่ ต้องรีเฟรชถึงหาย
-- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 65   
-- สาเหตุ: ใน handleDelete  มีการ setRequests(..) ที่ผิดทำให้การ deleteRequest ที่ส่งมายังจำข้อมูลเก่าอยู่ ไม่ rerender ใหม่
-- แก้อย่างไร: แก้ setRequests(request); ให้เป็น setRequests(nextRequests);
+> เคล็ด: เลขบรรทัดดูได้จากแถบซ้ายใน VS Code หรือจากข้อความ error ใน Console (เช่น `RequestList.jsx:9`)
 
-## บั๊กที่ 6 — อาการ: กด "Reset Demo Data" แล้วหน้าพัง/ว่างเปล่า
-- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 75-76
-- สาเหตุ: เพราะ setRequests(resetRequests()); ตรงๆ ไม่มีการ await ข้อมูล ทำให้มันกลับไปทำงานหลังจาก setRequests ไม่ได้
-- แก้อย่างไร: เพิ่ม const seedRequests = await resetRequests(); ได้ข้อมูลกลับมาเป็น Array ก่อนนำไป setRequests(seedRequests)
+---
+
+## บันทึกของฉัน — กรอกทั้ง 6 บั๊ก
+
+| # | อาการ (ให้มาแล้ว) | ไฟล์ : บรรทัด | สาเหตุ (ทำไมผิด) | แก้อย่างไร |
+|---|---|---|---|---|
+| 1 | Console เตือนสีเหลืองเรื่องรายการ (list) | `src/components/RequestList.jsx : 9` | ไม่ได้ใส่ prop `key` ให้กับ element ที่ถูกสร้างผ่าน `.map()` ทำให้ React แยกแยะรายการไม่ได้ | เพิ่ม `key={request.id}` เข้าไปใน element |
+| 2 | ตัวเลข "รอดำเนินการ" ในแผงสรุปไม่ตรงกับที่เห็นจริง | `src/pages/DashboardPage.jsx : 47` | นับจำนวนรายการ pending ผิดเงื่อนไข โดยไปเช็คเป็น `request.status === 'completed'` แทน | เปลี่ยนจาก `'completed'` เป็น `'pending'` |
+| 3 | กดตัวกรอง "รอดำเนินการ" แล้วได้รายการที่ไม่ใช่ | `src/pages/DashboardPage.jsx : 55` | เงื่อนไขการกรองใช้เครื่องหมายไม่เท่ากับ (`!==`) ทำให้แสดงรายการที่ตรงข้ามกับที่ต้องการ | แก้เงื่อนไขจาก `request.status !== statusFilter` เป็น `===` |
+| 4 | เปลี่ยน URL `REQ-001` → `REQ-002` แล้วข้อมูลไม่เปลี่ยน | `src/pages/RequestDetailPage.jsx : 28` | ไม่ได้ใส่ `requestId` (จาก useParams) เข้าไปใน Dependency Array ทำให้ `useEffect` ไม่ทำงานซ้ำเมื่อ URL เปลี่ยน | เพิ่ม `requestId` เข้าไปใน array เป็น `[requestId, reloadKey]` |
+| 5 | กด "ลบ" แล้วรายการยังอยู่ ต้องรีเฟรชถึงหาย | `src/pages/DashboardPage.jsx : 65` | ส่งค่าผิดไปให้ `setRequests` โดยส่งข้อมูลเก่าเข้าไป ทำให้ข้อมูลไม่ถูกรีเฟรช | เปลี่ยนคำสั่งจาก `setRequests(request)` เป็น `setRequests(nextRequests)` |
+| 6 | กด "Reset Demo Data" แล้วหน้าพัง/ว่างเปล่า | `src/pages/DashboardPage.jsx : 75-76` | `resetRequests()` เป็นฟังก์ชัน Async ต้องรอผลลัพธ์ก่อน แต่เอาไปใส่ใน `setRequests` ทันที | เพิ่ม `await` เก็บค่าใส่ตัวแปร `seedRequests` ก่อน แล้วค่อยส่งให้ `setRequests(seedRequests)` |
+
+---
+
+## เช็คก่อนส่ง
+
+- [x] กรอกครบทั้ง 6 บั๊ก (ไฟล์:บรรทัด · สาเหตุ · แก้อย่างไร)
+- [x] เขียนด้วยคำของตัวเอง ไม่ใช่ก๊อปคำอธิบายจาก AI มาตรง ๆ
+- [x] ยืนยันแล้วว่าอาการทั้ง 6 หายจริงหลังแก้ (`npm run dev` แล้วลองทีละอาการ)
