@@ -51,13 +51,13 @@ function DashboardPage() {
   }), [requests]);
 
   const filteredRequests = requests.filter((request) => { 
-    
+    const matchStatus = statusFilter === 'all' || request.status === statusFilter;
     const query = searchQuery.toLowerCase();
     const matchSearch = query === '' || 
       request.requesterName.toLowerCase().includes(query) || 
-      request.details.toLowerCase().includes(query);
+      request.details.toLowerCase().includes(query);  
       
-    return matchSearch;
+    return matchSearch && matchStatus;
   }); 
 
   function handleRetry() {
