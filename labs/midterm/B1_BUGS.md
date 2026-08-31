@@ -25,11 +25,11 @@ pending: requests.filter((request) => request.status === 'completed').length,
 - แก้อย่างไร: เพิ่ม requestId ใน array [ requestId,reloadKey ] 
 
 ## บั๊กที่ 5 — อาการ: กด "ลบ" แล้วรายการยังอยู่ ต้องรีเฟรชถึงหาย
-- ไฟล์/บรรทัด:
-- สาเหตุ: 
-- แก้อย่างไร:
+- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 65   
+- สาเหตุ: ใน handleDelete  มีการ setRequests(..) ที่ผิดทำให้การ deleteRequest ที่ส่งมายังจำข้อมูลเก่าอยู่ ไม่ rerender ใหม่
+- แก้อย่างไร: แก้ setRequests(request); ให้เป็น setRequests(nextRequests);
 
 ## บั๊กที่ 6 — อาการ: กด "Reset Demo Data" แล้วหน้าพัง/ว่างเปล่า
-- ไฟล์/บรรทัด:
-- สาเหตุ:
-- แก้อย่างไร:
+- ไฟล์/บรรทัด: src/pages/DashboardPage.jsx บรรทัด 75-76
+- สาเหตุ: เพราะ setRequests(resetRequests()); ตรงๆ ไม่มีการ await ข้อมูล ทำให้มันกลับไปทำงานหลังจาก setRequests ไม่ได้
+- แก้อย่างไร: เพิ่ม const seedRequests = await resetRequests(); ได้ข้อมูลกลับมาเป็น Array ก่อนนำไป setRequests(seedRequests)
