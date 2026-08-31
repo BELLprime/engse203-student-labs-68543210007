@@ -116,7 +116,11 @@ function DashboardPage() {
               className="search-input"
             />
             {/* TODO B3: เพิ่ม onMarkDone={handleMarkDone} และเขียน handleMarkDone ให้เรียก updateRequestStatus แล้ว setRequests เพื่อให้ summary อัปเดต + รอด refresh */}
-            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+            {filteredRequests.length === 0 ? 
+              <p style={{ textAlign: 'center', padding: '2rem 0' }}>ไม่พบคำร้องที่ตรงกับการค้นหา</p>
+              : 
+              <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+            }
           </section>
         </>
       )}
