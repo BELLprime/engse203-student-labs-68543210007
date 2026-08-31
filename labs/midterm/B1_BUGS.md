@@ -20,13 +20,13 @@ pending: requests.filter((request) => request.status === 'completed').length,
 - แก้อย่างไร: request.status === statusFilter
 
 ## บั๊กที่ 4 — อาการ: เปลี่ยน URL จาก REQ-001 เป็น REQ-002 แล้วข้อมูลไม่เปลี่ยน
-- ไฟล์/บรรทัด:
-- สาเหตุ:
-- แก้อย่างไร:
+- ไฟล์/บรรทัด: src/pages/RequestDetailPage.jsx บรรทัด 28
+- สาเหตุ: ไม่ได้มีการใช้ requestId ที่เป็น useParams() ทำให้หา requestId ไม่เจอ และไม่รัน useEffect
+- แก้อย่างไร: เพิ่ม requestId ใน array [ requestId,reloadKey ] 
 
 ## บั๊กที่ 5 — อาการ: กด "ลบ" แล้วรายการยังอยู่ ต้องรีเฟรชถึงหาย
 - ไฟล์/บรรทัด:
-- สาเหตุ:
+- สาเหตุ: 
 - แก้อย่างไร:
 
 ## บั๊กที่ 6 — อาการ: กด "Reset Demo Data" แล้วหน้าพัง/ว่างเปล่า
