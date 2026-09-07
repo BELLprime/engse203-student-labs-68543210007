@@ -55,13 +55,13 @@ In-Class เราทำให้ API **ทำงานได้** · Take-Home 
 
 เปิด `src/services/requestService.js` แล้วค้นหาคำว่า `req` และ `res`
 
-- [ ] **ต้องไม่เจอเลย** — ถ้าเจอแปลว่า service รู้จัก HTTP ซึ่งผิดหลักการ
-- [ ] ทุกฟังก์ชันใน service คืนข้อมูลหรือ `null`/`true`/`false` — ไม่ส่ง response เอง
+- [x] **ต้องไม่เจอเลย** — ถ้าเจอแปลว่า service รู้จัก HTTP ซึ่งผิดหลักการ
+- [x] ทุกฟังก์ชันใน service คืนข้อมูลหรือ `null`/`true`/`false` — ไม่ส่ง response เอง
 
 เปิด `src/controllers/requestController.js`
 
-- [ ] ไม่มีการเข้าถึงตัวแปร `requests` โดยตรง — ต้องผ่าน `service.` เท่านั้น
-- [ ] ทุกฟังก์ชันจบด้วยการส่ง response (`res.json()` หรือ `res.status().end()`)
+- [x] ไม่มีการเข้าถึงตัวแปร `requests` โดยตรง — ต้องผ่าน `service.` เท่านั้น
+- [x] ทุกฟังก์ชันจบด้วยการส่ง response (`res.json()` หรือ `res.status().end()`)
 
 ## ⚠ ทำไมเรื่องนี้สำคัญ
 
