@@ -8,7 +8,7 @@
 - ระบบปฏิบัติการที่ใช้: Windows 11 / WSL2 (Ubuntu 24.04 LTS)
 - Node version: v22.23.1
 - Branch: `unit3/week-06`
-- Commit: `2602614`
+- Commit: `fd663c4`
 - วันที่ทดสอบ: 7 กันยายน 2026
 
 ## URLs
