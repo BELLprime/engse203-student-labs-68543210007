@@ -1,13 +1,13 @@
-import { readFile } from 'node:fs/promises';
+import { readFile } from "node:fs/promises";
 
-const SEED_PATH = new URL('../../data/initialRequests.json', import.meta.url);
+const SEED_PATH = new URL("../../data/initialRequests.json", import.meta.url);
 
 /** ข้อมูลอยู่ในหน่วยความจำของเซิร์ฟเวอร์ — หน่วย 4 จะเปลี่ยนเป็นฐานข้อมูล */
 let requests = [];
 
 /** โหลดข้อมูลตัวอย่างตอนเซิร์ฟเวอร์เริ่มทำงาน — ให้มาแล้ว ไม่ต้องแก้ */
 export async function loadSeed() {
-  const raw = await readFile(SEED_PATH, 'utf8');
+  const raw = await readFile(SEED_PATH, "utf8");
   requests = JSON.parse(raw);
   return requests;
 }
@@ -29,7 +29,6 @@ export function findAll({ status } = {}) {
 export function findById(id) {
   const found = requests.find((r) => r.id === id);
   return found ? structuredClone(found) : null;
-
 }
 
 /** สร้างรหัสไม่ซ้ำ — ให้มาแล้ว ไม่ต้องแก้ */
@@ -50,13 +49,13 @@ function createId() {
  */
 export function create(input) {
   const newRequest = {
-    id: createId(),                        
+    id: createId(),
     requesterName: input.requesterName.trim(),
     requestType: input.requestType,
     location: input.location.trim(),
     details: input.details.trim(),
     priority: input.priority,
-    status: 'pending',                     
+    status: "pending",
   };
   requests.push(newRequest);
   return structuredClone(newRequest);
@@ -67,7 +66,13 @@ export function create(input) {
  * - ไม่พบคืน null · พบแล้วเปลี่ยน status และคืนสำเนา
  */
 export function updateStatus(id, status) {
-  throw new Error('TODO W06-S4: updateStatus');
+  if (!["pending", "in-progress", "completed"].includes(status)) {
+    throw new Error(`สถานะ ${status} ไม่ถูกต้อง`);
+  }
+  const found = requests.find((r) => r.id === id);
+  if (!found) return null;
+  found.status = status;
+  return structuredClone(found);
 }
 
 /**
@@ -76,5 +81,7 @@ export function updateStatus(id, status) {
  * - ใช้ .filter() สร้าง array ใหม่ อย่าแก้ array เดิม
  */
 export function remove(id) {
-  throw new Error('TODO W06-S5: remove');
+  const before = requests.length;
+  requests = requests.filter((r) => r.id !== id);
+  return requests.length < before;
 }
