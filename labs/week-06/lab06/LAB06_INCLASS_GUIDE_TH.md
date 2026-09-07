@@ -98,10 +98,10 @@ https://jsonplaceholder.typicode.com/posts/1
 
 **หาให้เจอ**
 
-- [ ] request ที่ **method เป็น GET**
-- [ ] request ที่ได้ **status 200**
-- [ ] request ที่ได้ข้อมูล **JSON** กลับมา (ดูคอลัมน์ Type)
-- [ ] คลิกที่ request หนึ่งอัน → ดูแท็บ **Headers**, **Response**
+- [x] request ที่ **method เป็น GET**
+- [x] request ที่ได้ **status 200**
+- [x] request ที่ได้ข้อมูล **JSON** กลับมา (ดูคอลัมน์ Type)
+- [x] คลิกที่ request หนึ่งอัน → ดูแท็บ **Headers**, **Response**
 
 > **ทักษะที่ต้องได้** — ชี้ได้ว่า method, status code, request body, response อยู่ตรงไหนในหน้าจอ DevTools
 
@@ -111,9 +111,9 @@ https://jsonplaceholder.typicode.com/posts/1
 
 | # | Method | URL | status ที่ได้ |
 |---|---|---|---|
-| 1 | GET | `https://jsonplaceholder.typicode.com/posts` | ______ |
-| 2 | GET | `https://jsonplaceholder.typicode.com/posts/1` | ______ |
-| 3 | POST | `https://jsonplaceholder.typicode.com/posts` | ______ |
+| 1 | GET | `https://jsonplaceholder.typicode.com/posts` | 200 |
+| 2 | GET | `https://jsonplaceholder.typicode.com/posts/1` | 200 |
+| 3 | POST | `https://jsonplaceholder.typicode.com/posts` | 201 |
 
 **สำหรับข้อ 3** เลือก Body → raw → JSON แล้วใส่
 
@@ -123,10 +123,10 @@ https://jsonplaceholder.typicode.com/posts/1
 
 ### ✓ ผ่าน CP00 เมื่อ
 
-- [ ] เปิด public API ในเบราว์เซอร์แล้วเห็น JSON
-- [ ] ชี้ได้ว่าใน DevTools Network method/status อยู่ตรงไหน
-- [ ] ยิง GET และ POST ด้วย Postman ได้
-- [ ] **สังเกตได้ว่า POST สำเร็จได้ status 201 ไม่ใช่ 200**
+- [x] เปิด public API ในเบราว์เซอร์แล้วเห็น JSON
+- [x] ชี้ได้ว่าใน DevTools Network method/status อยู่ตรงไหน
+- [x] ยิง GET และ POST ด้วย Postman ได้
+- [x] **สังเกตได้ว่า POST สำเร็จได้ status 201 ไม่ใช่ 200**
 
 ### 💬 คำถามที่ต้องตอบได้
 
