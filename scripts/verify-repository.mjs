@@ -55,7 +55,10 @@ await scanForbidden(path.join(ROOT, "labs"));
 
 try {
   const branch = execFileSync("git", ["branch", "--show-current"], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
-  if (selectedWeek && branch && branch !== `lab/${selectedWeek}` && branch !== "main") warnings.push(`current branch = ${branch}; ที่แนะนำคือ lab/${selectedWeek}`);
+  const targetMetadataPath = selectedWeek ? path.join(ROOT, "labs", selectedWeek, "lab-metadata.json") : null;
+  const targetMetadata = targetMetadataPath && (await exists(targetMetadataPath)) ? await readJson(targetMetadataPath) : null;
+  const expectedBranch = targetMetadata?.branch || (selectedWeek === "week-06" ? "unit3/week-06" : `lab/${selectedWeek}`);
+  if (selectedWeek && branch && branch !== expectedBranch && branch !== "main") warnings.push(`current branch = ${branch}; ที่แนะนำคือ ${expectedBranch}`);
 } catch {
   warnings.push("ยังตรวจ Git branch ไม่ได้จนกว่าจะ git init/clone");
 }
