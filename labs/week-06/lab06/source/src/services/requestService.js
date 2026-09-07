@@ -49,7 +49,17 @@ function createId() {
  *        → status เริ่มต้นเป็น 'pending' เสมอ → push เข้า requests → คืนสำเนา
  */
 export function create(input) {
-  throw new Error('TODO W06-S3: create');
+  const newRequest = {
+    id: createId(),                        
+    requesterName: input.requesterName.trim(),
+    requestType: input.requestType,
+    location: input.location.trim(),
+    details: input.details.trim(),
+    priority: input.priority,
+    status: 'pending',                     
+  };
+  requests.push(newRequest);
+  return structuredClone(newRequest);
 }
 
 /**

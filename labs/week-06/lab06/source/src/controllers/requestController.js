@@ -35,7 +35,8 @@ export function getRequest(req, res) {
  * ⚠ POST สำเร็จตอบ 201 ไม่ใช่ 200
  */
 export function createRequest(req, res) {
-  throw new Error('TODO W06-C3: createRequest');
+  const created = service.create(req.body);
+  res.status(201).json(created);
 }
 
 /**

@@ -14,7 +14,8 @@ export function createApp() {
    * ⚠ ถ้าลืม express.json() แล้ว req.body จะเป็น undefined ตลอด
    *   POST จะพังโดยไม่มี error บอกสาเหตุ — กับดักอันดับ 1 ของมือใหม่
    */
-
+  app.use(logger);
+  app.use(express.json());
   /**
    * TODO W06-A2 (CP01) · route ทดสอบว่าเซิร์ฟเวอร์ทำงาน
    *   GET / → res.json({ message: 'Campus Service API is running', version: '1.0.0' })
@@ -23,6 +24,8 @@ export function createApp() {
     res.json({ message: "Campus Service API is running", version: "1.0.0" });
   });
   app.use('/api/requests', requestRoutes);
+  
+  
   /**
    * TODO W06-A3 (CP02) · เชื่อม requestRoutes เข้ากับ path /api/requests
    *   app.use('/api/requests', requestRoutes)

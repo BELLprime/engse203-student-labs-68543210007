@@ -17,6 +17,7 @@ const router = Router();
  * คำใบ้: ใส่ middleware คั่นได้ เช่น router.post('/', validateRequest, controller.createRequest)
  */
 router.get('/', controller.listRequests);
+router.post('/', validateRequest, controller.createRequest);
 router.get('/:id', controller.getRequest);
 
 export default router;
