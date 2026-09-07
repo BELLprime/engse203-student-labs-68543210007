@@ -1,5 +1,6 @@
-import { readFile } from "node:fs/promises";
+import { readFile ,writeFile } from "node:fs/promises";
 
+const DATA_PATH = new URL('../../data/requests.json', import.meta.url);
 const SEED_PATH = new URL("../../data/initialRequests.json", import.meta.url);
 
 /** ข้อมูลอยู่ในหน่วยความจำของเซิร์ฟเวอร์ — หน่วย 4 จะเปลี่ยนเป็นฐานข้อมูล */
@@ -7,8 +8,14 @@ let requests = [];
 
 /** โหลดข้อมูลตัวอย่างตอนเซิร์ฟเวอร์เริ่มทำงาน — ให้มาแล้ว ไม่ต้องแก้ */
 export async function loadSeed() {
-  const raw = await readFile(SEED_PATH, "utf8");
-  requests = JSON.parse(raw);
+  try {
+    const raw = await readFile(DATA_PATH, 'utf8');
+    requests = JSON.parse(raw);
+  } catch {
+    const raw = await readFile(SEED_PATH, 'utf8');
+    requests = JSON.parse(raw);
+    await persist();
+  }
   return requests;
 }
 
@@ -58,6 +65,7 @@ export function create(input) {
     status: "pending",
   };
   requests.push(newRequest);
+  persist(); // บันทึกลงไฟล์ทันที — ไม่ต้องรอให้เซิร์ฟเวอร์ปิด
   return structuredClone(newRequest);
 }
 
@@ -83,5 +91,10 @@ export function updateStatus(id, status) {
 export function remove(id) {
   const before = requests.length;
   requests = requests.filter((r) => r.id !== id);
+  persist(); // บันทึกลงไฟล์ทันที — ไม่ต้องรอให้เซิร์ฟเวอร์ปิด
   return requests.length < before;
+}
+
+async function persist() {
+  await writeFile(DATA_PATH, JSON.stringify(requests, null, 2), 'utf8');
 }
