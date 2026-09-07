@@ -16,5 +16,7 @@ const router = Router();
  * ⚠ route ที่เจาะจง (path คงที่) ต้องเขียนก่อน route ที่มี :id เสมอ
  * คำใบ้: ใส่ middleware คั่นได้ เช่น router.post('/', validateRequest, controller.createRequest)
  */
+router.get('/', controller.listRequests);
+router.get('/:id', controller.getRequest);
 
 export default router;
