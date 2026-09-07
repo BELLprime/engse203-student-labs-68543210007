@@ -80,6 +80,7 @@ export function updateStatus(id, status) {
   const found = requests.find((r) => r.id === id);
   if (!found) return null;
   found.status = status;
+  persist();
   return structuredClone(found);
 }
 
