@@ -262,10 +262,10 @@ cp lab07/starter/templates/API_CONTRACT_TEMPLATE.md API_CONTRACT.md
 
 ### ✓ ผ่าน CP15 เมื่อ
 
-- [ ] มีไฟล์ `API_CONTRACT.md` ครบทั้ง 5 endpoint
-- [ ] ตัวอย่าง request/response **copy มาจากของจริง**
-- [ ] มีส่วน error, CORS และ environment variables
-- [ ] **ให้เพื่อนอ่านแล้วเขาเรียก API เราได้โดยไม่ต้องถาม**
+- [x] มีไฟล์ `API_CONTRACT.md` ครบทั้ง 5 endpoint
+- [x] ตัวอย่าง request/response **copy มาจากของจริง**
+- [x] มีส่วน error, CORS และ environment variables
+- [x] **ให้เพื่อนอ่านแล้วเขาเรียก API เราได้โดยไม่ต้องถาม**
 
 ---
 
@@ -341,10 +341,10 @@ test('POST ข้อมูลไม่ครบ ตอบ 400 พร้อมร
 
 ### ✓ ผ่าน CP16 เมื่อ
 
-- [ ] `npm test` ผ่านทุกเคส
-- [ ] มีอย่างน้อย 6 เคส
-- [ ] ชื่อ test อ่านแล้วรู้ว่าทดสอบอะไร
-- [ ] **ลองทำให้พัง** — แก้ controller ให้ตอบ 200 แทน 201 แล้วรัน test ต้องฟ้อง
+- [x] `npm test` ผ่านทุกเคส
+- [x] มีอย่างน้อย 6 เคส
+- [x] ชื่อ test อ่านแล้วรู้ว่าทดสอบอะไร
+- [x] **ลองทำให้พัง** — แก้ controller ให้ตอบ 200 แทน 201 แล้วรัน test ต้องฟ้อง
 
 ---
 

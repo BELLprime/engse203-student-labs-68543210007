@@ -18,9 +18,7 @@ const validRequest = {
   priority: 'normal',
 };
 
-/**
- * TODO W07-TEST (🏠 CP16) · เขียน test อย่างน้อย 6 เคส
- *
+ /* TODO W07-TEST (🏠 CP16) · เขียน test อย่างน้อย 6 เคส
  * ที่ต้องมี
  *   1. GET /api/requests            → 200 และได้ array
  *   2. GET /api/requests/:id พบ      → 200
@@ -28,14 +26,61 @@ const validRequest = {
  *   4. POST ข้อมูลถูกต้อง            → 201 และ status เป็น pending
  *   5. POST ข้อมูลไม่ครบ             → 400
  *   6. CORS header ตอบ origin ที่อนุญาต
- *
  * รันด้วย: npm test
  * ตัวอย่างโครง (ลบคอมเมนต์นี้แล้วเขียนจริง)
  */
+//1. GET /api/requests            → 200 และได้ array
 describe('GET /api/requests', () => {
-  test('คืนรายการทั้งหมด พร้อม status 200', async () => {
-    // const res = await request(app).get('/api/requests');
-    // assert.equal(res.status, 200);
-    assert.ok(true, 'ยังไม่ได้เขียน test — ดู TODO W07-TEST');
+  test('คืนรายการทั้งหมด พร้อม status 200 และเป็น Array', async () => {
+    const res = await request(app).get('/api/requests');
+    assert.equal(res.status, 200);
+    assert.ok(Array.isArray(res.body));
+  });
+});
+//2. GET /api/requests/:id พบ      → 200
+describe('GET /api/requests/:id พบ', () => {
+  test('พบคำร้อง คืนข้อมูลคำร้องพร้อม status 200', async () => {
+    const res = await request(app).get('/api/requests/REQ-001');
+    assert.equal(res.status, 200);
+    assert.equal(res.body.id, `REQ-001`);
+    assert.ok(res.body.requesterName);
+  });
+});
+//3. GET /api/requests/:id ไม่พบ   → 404
+describe('GET /api/requests/:id ไม่พบ', () => {
+  test('ไม่พบคำร้อง ตอบกลับ 404 Not Found', async () => {
+    const res = await request(app).get('/api/requests/REQ-999');
+    assert.equal(res.status, 404);
+    assert.ok(res.body.error);
+  });
+});
+//4. POST ข้อมูลถูกต้อง            → 201 และ status เป็น pending
+describe('POST /api/requests ข้อมูลถูกต้อง', () => {
+  test('ตอบ 201 Created และ status เป็น pending ที่มีชื่อ requesterName  ค้องเหมือนตามที่ส่งใน validRequest', async () => {
+    const res = await request(app).post(`/api/requests`).send(validRequest);
+    assert.equal(res.status, 201);
+    assert.equal(res.body.status, `pending`);
+    assert.equal(res.body.requesterName ,validRequest.requesterName);
+  });
+});
+//5. POST ข้อมูลไม่ครบ             → 400
+describe('POST /api/requests ข้อมูลไม่ครบถ้วน', () => {
+  test('ตอบ 400 Bad Request พร้อมรายละเอียดข้อผิดพลาด', async () => {
+    const invalidRequest = {
+      requesterName: '-',
+      details: '-', 
+    };
+    const res = await request(app).post(`/api/requests`).send(invalidRequest);
+    assert.equal(res.status, 400);
+    assert.ok(res.body.error);
+    assert.ok(Array.isArray(res.body.details));
+  });
+});
+//6. CORS header ตอบ origin ที่อนุญาต
+describe('CORS header ตอบ origin ที่อนุญาต', () => {
+  test('ตอบ CORS header (Access-Control-Allow-Origin) ให้ frontend origin ที่อนุญาต', async () => {
+    const res = await request(app).get(`/api/requests`).set(`Origin`, `http://localhost:5173`);
+    assert.equal(res.status, 200);
+    assert.equal(res.header['access-control-allow-origin'], 'http://localhost:5173');
   });
 });
