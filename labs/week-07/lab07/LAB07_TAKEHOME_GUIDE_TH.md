@@ -179,9 +179,9 @@ stack trace บอก**โครงสร้างไฟล์ในเครื
 
 ### ✓ ผ่าน CP14 เมื่อ
 
-- [ ] terminal เห็น log รูปแบบ morgan (`GET /api/requests 200 3.221 ms - 669`)
-- [ ] สลับ `NODE_ENV` แล้วรูปแบบ log เปลี่ยนจริง
-- [ ] ตั้ง `NODE_ENV=production` แล้ว response ของ error **ไม่มี** `stack`
+- [x] terminal เห็น log รูปแบบ morgan (`GET /api/requests 200 3.221 ms - 669`)
+- [x] สลับ `NODE_ENV` แล้วรูปแบบ log เปลี่ยนจริง
+- [x] ตั้ง `NODE_ENV=production` แล้ว response ของ error **ไม่มี** `stack`
 
 ---
 
