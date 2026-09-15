@@ -76,6 +76,7 @@ function RequestForm({ onAddRequest }) {
           <option value="แจ้งซ่อม">แจ้งซ่อม</option>
           <option value="ขอใช้ห้อง">ขอใช้ห้อง</option>
           <option value="บริการบัญชีผู้ใช้">บริการบัญชีผู้ใช้</option>
+          <option value="ขอใช้อุปกรณ์">ขอใช้อุปกรณ์</option> 
         </select>
         <FieldError id="requestType-error" message={errors.requestType} />
       </div>

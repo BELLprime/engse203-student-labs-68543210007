@@ -85,9 +85,9 @@ export async function updateRequestStatus(requestId, status) {
 
 **สิ่งที่ต้องคิด**
 
-- [ ] ระหว่างกดแล้วรอ API ตอบ — ปุ่มควร disabled กันกดซ้ำ
-- [ ] สำเร็จแล้วหน้าจอต้องอัปเดตให้ตรงกับข้อมูลใหม่
-- [ ] ถ้าเปลี่ยนไม่สำเร็จ ต้องบอกผู้ใช้
+- [x] ระหว่างกดแล้วรอ API ตอบ — ปุ่มควร disabled กันกดซ้ำ
+- [x] สำเร็จแล้วหน้าจอต้องอัปเดตให้ตรงกับข้อมูลใหม่
+- [x] ถ้าเปลี่ยนไม่สำเร็จ ต้องบอกผู้ใช้
 
 ```jsx
 async function handleChangeStatus(nextStatus) {
@@ -117,10 +117,10 @@ setRequest(updated);
 
 ### ✓ ผ่าน CP13 เมื่อ
 
-- [ ] Postman: `PUT` สำเร็จ → 200 · status ผิด → 400 · ไม่พบ → 404
-- [ ] กดปุ่มในหน้าเว็บแล้วสถานะเปลี่ยนจริง
-- [ ] refresh หน้าเว็บแล้วสถานะใหม่ยังอยู่ (แปลว่าบันทึกจริง)
-- [ ] ระหว่างรอ API ตอบ ปุ่มกดซ้ำไม่ได้
+- [x] Postman: `PUT` สำเร็จ → 200 · status ผิด → 400 · ไม่พบ → 404
+- [x] กดปุ่มในหน้าเว็บแล้วสถานะเปลี่ยนจริง
+- [x] refresh หน้าเว็บแล้วสถานะใหม่ยังอยู่ (แปลว่าบันทึกจริง)
+- [x] ระหว่างรอ API ตอบ ปุ่มกดซ้ำไม่ได้
 
 ---
 
@@ -179,9 +179,9 @@ stack trace บอก**โครงสร้างไฟล์ในเครื
 
 ### ✓ ผ่าน CP14 เมื่อ
 
-- [ ] terminal เห็น log รูปแบบ morgan (`GET /api/requests 200 3.221 ms - 669`)
-- [ ] สลับ `NODE_ENV` แล้วรูปแบบ log เปลี่ยนจริง
-- [ ] ตั้ง `NODE_ENV=production` แล้ว response ของ error **ไม่มี** `stack`
+- [x] terminal เห็น log รูปแบบ morgan (`GET /api/requests 200 3.221 ms - 669`)
+- [x] สลับ `NODE_ENV` แล้วรูปแบบ log เปลี่ยนจริง
+- [x] ตั้ง `NODE_ENV=production` แล้ว response ของ error **ไม่มี** `stack`
 
 ---
 
@@ -262,10 +262,10 @@ cp lab07/starter/templates/API_CONTRACT_TEMPLATE.md API_CONTRACT.md
 
 ### ✓ ผ่าน CP15 เมื่อ
 
-- [ ] มีไฟล์ `API_CONTRACT.md` ครบทั้ง 5 endpoint
-- [ ] ตัวอย่าง request/response **copy มาจากของจริง**
-- [ ] มีส่วน error, CORS และ environment variables
-- [ ] **ให้เพื่อนอ่านแล้วเขาเรียก API เราได้โดยไม่ต้องถาม**
+- [x] มีไฟล์ `API_CONTRACT.md` ครบทั้ง 5 endpoint
+- [x] ตัวอย่าง request/response **copy มาจากของจริง**
+- [x] มีส่วน error, CORS และ environment variables
+- [x] **ให้เพื่อนอ่านแล้วเขาเรียก API เราได้โดยไม่ต้องถาม**
 
 ---
 
@@ -341,10 +341,10 @@ test('POST ข้อมูลไม่ครบ ตอบ 400 พร้อมร
 
 ### ✓ ผ่าน CP16 เมื่อ
 
-- [ ] `npm test` ผ่านทุกเคส
-- [ ] มีอย่างน้อย 6 เคส
-- [ ] ชื่อ test อ่านแล้วรู้ว่าทดสอบอะไร
-- [ ] **ลองทำให้พัง** — แก้ controller ให้ตอบ 200 แทน 201 แล้วรัน test ต้องฟ้อง
+- [x] `npm test` ผ่านทุกเคส
+- [x] มีอย่างน้อย 6 เคส
+- [x] ชื่อ test อ่านแล้วรู้ว่าทดสอบอะไร
+- [x] **ลองทำให้พัง** — แก้ controller ให้ตอบ 200 แทน 201 แล้วรัน test ต้องฟ้อง
 
 ---
 
