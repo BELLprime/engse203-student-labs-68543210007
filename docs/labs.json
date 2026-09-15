@@ -95,10 +95,10 @@
   {
     "week": "week-07",
     "title": "RESTful API, Validation & Error Handling",
-    "status": "ready",
+    "status": "submitted",
     "branch": "unit3/week-07",
     "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
-    "originalCommit": "e418376",
+    "originalCommit": "da32527",
     "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/8",
     "submissionTag": "lab-07-submission-v1",
     "testStatus": "pass",
