@@ -37,3 +37,8 @@ export function deleteRequest(req, res) {
     throw new AppError(`ไม่พบคำร้องรหัส ${req.params.id}`, 404);
   res.status(204).end();
 }
+
+export async function resetRequests(req, res) {
+  const resetData = await service.loadSeed();
+  res.status(200).json(resetData);
+}

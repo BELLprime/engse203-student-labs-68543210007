@@ -11,5 +11,6 @@ router.post('/', validateRequest, asyncHandler(controller.createRequest));
 router.get('/:id', asyncHandler(controller.getRequest));
 router.put('/:id', asyncHandler(controller.updateRequestStatus));
 router.delete('/:id', asyncHandler(controller.deleteRequest));
+router.post('/reset', asyncHandler(controller.resetRequests));
 
 export default router;
