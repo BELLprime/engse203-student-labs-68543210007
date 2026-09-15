@@ -1,0 +1,12 @@
+{
+  "week": "week-07",
+  "title": "RESTful API, Validation & Error Handling",
+  "status": "ready",
+  "branch": "unit3/week-07",
+  "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
+  "originalCommit": "e418376",
+  "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/8",
+  "submissionTag": "lab-07-submission-v1",
+  "testStatus": "pass",
+  "notes": "Full-Stack Integration (React + Express API), CORS Configuration, Automated Tests (6/6 เคส), API Contract และ Challenge ครบถ้วน (36/36 รายการ)"
+}
