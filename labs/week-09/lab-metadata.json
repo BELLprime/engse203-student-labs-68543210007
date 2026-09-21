@@ -1,0 +1,12 @@
+{
+  "week": "week-09",
+  "title": "Relational Database & SQL (SQLite)",
+  "status": "ready",
+  "branch": "unit4/week-09",
+  "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
+  "originalCommit": "6bfed07",
+  "pullRequestUrl": "",
+  "submissionTag": "lab-09-submission-v1",
+  "testStatus": "pass",
+  "notes": "Relational Database Design (1:N), SQLite Schema & Constraints, SQL Queries (8 ข้อ), Data Modeling (DATA_MODEL.md), Constraint Testing (CP25) และ Challenge ครบถ้วน (30/30 รายการ)"
+}
