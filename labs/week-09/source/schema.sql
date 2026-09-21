@@ -12,7 +12,8 @@ PRAGMA foreign_keys = ON;
 -- TODO ①  ลบตารางเดิมก่อน เพื่อให้รันไฟล์นี้ซ้ำได้
 --         ⚠ ลำดับสำคัญ — ต้องลบตารางที่มี foreign key ก่อน
 --         คำใบ้: DROP TABLE IF EXISTS ...
-
+DROP TABLE IF EXISTS requests;
+DROP TABLE IF EXISTS users;
 
 -- TODO ②  สร้างตาราง users
 --         ต้องมี: id (PK, INTEGER, AUTOINCREMENT)
@@ -63,4 +64,10 @@ INSERT INTO requests (id, requester_id, request_type, location, details, priorit
   ('REQ-002', 2, 'บริการบัญชีผู้ใช้', 'อาคารวิศวกรรม',      'เข้าสู่ระบบห้องปฏิบัติการไม่ได้',     'normal', 'in-progress'),
   ('REQ-003', 3, 'ขอใช้อุปกรณ์',      'ห้องประชุม 2',        'ขอยืมโปรเจกเตอร์',                 'normal', 'completed'),
   ('REQ-004', 1, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 302', 'คอมพิวเตอร์เครื่องที่ 5 เปิดไม่ติด', 'urgent', 'pending'),
-  ('REQ-005', 4, 'อื่น ๆ',             'ห้องสมุด ชั้น 2',     'ขอเพิ่มปลั๊กไฟบริเวณโต๊ะอ่านหนังสือ', 'normal', 'pending');
+  ('REQ-005', 4, 'อื่น ๆ',             'ห้องสมุด ชั้น 2',     'ขอเพิ่มปลั๊กไฟบริเวณโต๊ะอ่านหนังสือ', 'normal', 'pending'),
+  ('REQ-006', 2, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 401', 'ไฟในห้องกะพริบตลอดเวลา',             'normal', 'pending'),
+  ('REQ-007', 3, 'บริการบัญชีผู้ใช้', 'อาคาร 1',             'ลืมรหัสผ่านอีเมลมหาวิทยาลัย',       'normal', 'completed'),
+  ('REQ-008', 4, 'อื่น ๆ',             'ลานจอดรถ',           'ขอเพิ่มไฟส่องสว่างตอนกลางคืน',      'urgent', 'in-progress');
+
+CREATE INDEX IF NOT EXISTS idx_requests_status ON requests(status);
+CREATE INDEX IF NOT EXISTS idx_requests_requester ON requests(requester_id);
