@@ -52,11 +52,11 @@ CREATE TABLE requests (
 );
 -- TODO ④  ใส่ข้อมูลตั้งต้น
 --         users อย่างน้อย 4 คน · requests อย่างน้อย 5 รายการ
-INSERT INTO users (name, department, email) VALUES
-  ('สมชาย ใจดี',      'วิศวกรรมซอฟต์แวร์', 'somchai@rmutl.ac.th'),
-  ('สุภาวดี รักเรียน', 'วิศวกรรมซอฟต์แวร์', 'supawadee@rmutl.ac.th'),
-  ('ธนกฤต ตั้งใจ',     'วิศวกรรมไฟฟ้า',     'thanakrit@rmutl.ac.th'),
-  ('ปรียา ขยันยิ่ง',   'สำนักวิทยบริการ',   'preeya@rmutl.ac.th');
+INSERT INTO users (id ,name, department, email) VALUES
+  (1,'สมชาย ใจดี',      'วิศวกรรมซอฟต์แวร์', 'somchai@rmutl.ac.th'),
+  (2,'สุภาวดี รักเรียน', 'วิศวกรรมซอฟต์แวร์', 'supawadee@rmutl.ac.th'),
+  (3,'ธนกฤต ตั้งใจ',     'วิศวกรรมไฟฟ้า',     'thanakrit@rmutl.ac.th'),
+  (4,'ปรียา ขยันยิ่ง',   'สำนักวิทยบริการ',   'preeya@rmutl.ac.th');
 
 INSERT INTO requests (id, requester_id, request_type, location, details, priority, status) VALUES
   ('REQ-001', 1, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 301', 'เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า', 'urgent', 'pending'),
