@@ -8,7 +8,7 @@
 - **ระบบปฏิบัติการที่ใช้:** Windows 11 / WSL2 (Ubuntu 24.04 LTS)
 - **Node version:** v22.23.1
 - **Branch:** `unit4/week-09`
-- **Commit:** `6bfed07`
+- **Commit:** `e7638b7`
 - **วันที่ทดสอบ:** 21 กันยายน 2026
 
 ## URLs
@@ -176,20 +176,6 @@ labs/week-09/
 | ③ | Unique Constraint | ใส่อีเมล `somchai@rmutl.ac.th` ซ้ำกับคนเดิม | `UNIQUE constraint failed: users.email` | ✅ ปฏิเสธสำเร็จ |
 | ④ | Primary Key | ใส่รหัสคำร้อง `id = 'REQ-001'` ซ้ำ | `UNIQUE constraint failed: requests.id` | ✅ ปฏิเสธสำเร็จ |
 | ⑤ | Not Null Constraint | ใส่คำร้องโดยไม่ระบุคอลัมน์ `location` | `NOT NULL constraint failed: requests.location` | ✅ ปฏิเสธสำเร็จ |
-
----
-
-## ปัญหาที่พบและวิธีแก้ไข
-
-- **ปัญหาที่ 1: การเขียนเงื่อนไขกรองหลายค่าพร้อมกันใน SQL (ข้อ ③)**
-  - *อาการ:* ตอนแรกลองเขียน `status = 'pending','in-progress' AND` แล้วเกิด Syntax Error
-  - *วิธีแก้:* ใน SQL ต้องใช้โอเปอเรเตอร์ `IN ('pending', 'in-progress')` หรือ `status != 'completed'` และต่อด้วย `priority = 'urgent'` เพื่อให้เงื่อนไขทางตรรกศาสตร์สมบูรณ์
-- **ปัญหาที่ 2: ข้อผิดพลาด Ambiguous Column Name เมื่อทำการ JOIN (ข้อ ⑧)**
-  - *อาการ:* เมื่อ `JOIN requests` กับ `users` แล้วสั่ง `ORDER BY id` ระบบแจ้งข้อผิดพลาด `ambiguous column name: id` เนื่องจากทั้งสองตารางมีคอลัมน์ชื่อ `id` เหมือนกัน
-  - *วิธีแก้:* ต้องระบุ Table Prefix นำหน้าให้ชัดเจน เช่น `r.id` เพื่อระบุว่าต้องการอ้างอิงถึง `id` ของตาราง `requests`
-- **ปัญหาที่ 3: ลำดับการลบตารางเดิมใน `schema.sql` (CP23)**
-  - *อาการ:* หากสั่ง `DROP TABLE users` ก่อน จะติดปัญหา Foreign Key constraint เพราะมีตาราง `requests` ชี้มาอยู่
-  - *วิธีแก้:* จัดลำดับคำสั่งให้ลบตารางลูก (`requests`) ก่อนตารางแม่ (`users`) เสมอ เพื่อรักษา Referential Integrity
 
 ---
 
