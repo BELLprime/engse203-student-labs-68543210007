@@ -91,6 +91,9 @@ labs/week-09/
 ├── lab-metadata.json       # ข้อมูลกำกับสถานะการส่งงานและผลการทดสอบ
 ├── lab09/                  # เอกสารคู่มือ In-Class และ Take-Home
 ├── guides/                 # สไลด์และเอกสารประกอบการสอน HTML
+├── evidence/               # หลักฐานการทดสอบ
+│   ├── README.md           # รายงานผลการทดสอบ Constraints (CP25) และ Checker
+│   └── images/             # ภาพ Screenshot หลักฐาน
 └── source/
     ├── README.md           # รายงานการส่งงานของนักศึกษา (เอกสารฉบับนี้)
     ├── AI_USAGE.md         # บันทึกการใช้งานและการเรียนรู้ผ่าน AI
@@ -107,6 +110,8 @@ labs/week-09/
 ## หลักฐานผลลัพธ์ (Evidence)
 
 ### 1. ผลการตรวจเช็คอัตโนมัติ (`check-week09.mjs`): ผ่าน 30 / 30 รายการ (100% เต็ม)
+
+![ผลการตรวจ check-week09](../evidence/images/check-week09-30-pass.png)
 
 ```text
 ✅ FILE มีไฟล์ campus.db
@@ -168,6 +173,8 @@ labs/week-09/
 ---
 
 ### 3. ผลการทดสอบ Constraints (CP25)
+
+![การทดสอบ Constraints](../evidence/images/cp25-constraint-violation.png)
 
 | ข้อ | ประเภท Constraint | คำสั่งที่ทดสอบ | Error ที่ได้รับจริง | ผลการประเมิน |
 |:---:|---|---|---|:---:|
