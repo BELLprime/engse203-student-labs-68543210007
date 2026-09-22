@@ -1,0 +1,274 @@
+# API Contract — Campus Service Request API
+
+**เวอร์ชัน:** 2.0.0 · **Base URL:** `http://localhost:3001`
+**รูปแบบข้อมูล:** JSON (`Content-Type: application/json`)
+
+> **API Contract คืออะไร** — ข้อตกลงระหว่างคนทำ front-end กับคนทำ back-end
+> ว่าจะคุยกันด้วย endpoint อะไร ส่งอะไรไป ได้อะไรกลับ
+> มีไว้เพื่อให้สองฝั่ง**ทำงานคู่ขนานกันได้** โดยไม่ต้องรอกัน
+
+---
+
+## โครงสร้างข้อมูล Request
+
+| field | ชนิด | คำอธิบาย | ตัวอย่าง |
+|---|---|---|---|
+| `id` | string | รหัสคำร้อง · ขึ้นต้นด้วย `REQ-` · เซิร์ฟเวอร์สร้างให้ | `"REQ-001"` |
+| `requesterName` | string | ชื่อผู้แจ้ง · อย่างน้อย 2 ตัวอักษร | `"สมชาย ใจดี"` |
+| `requestType` | string | ประเภท · 1 ใน 4 ค่าที่กำหนด | `"แจ้งซ่อม"` |
+| `location` | string | สถานที่ · ห้ามว่าง | `"ห้องปฏิบัติการ 301"` |
+| `details` | string | รายละเอียด · อย่างน้อย 10 ตัวอักษร | `"เครื่องปรับอากาศไม่ทำงาน"` |
+| `priority` | string | `"normal"` หรือ `"urgent"` | `"urgent"` |
+| `status` | string | `"pending"` · `"in-progress"` · `"completed"` | `"pending"` |
+
+**ค่าที่ยอมรับของ `requestType`** — `แจ้งซ่อม` · `บริการบัญชีผู้ใช้` · `ขอใช้อุปกรณ์` · `อื่น ๆ`
+
+---
+
+## Endpoints
+
+| Method | Endpoint | คำอธิบาย | Request body | สำเร็จ | ผิดพลาด |
+|---|---|---|---|---|---|
+| `GET` | `/api/requests` | ดูคำร้องทั้งหมด | — | `200` + array | — |
+| `GET` | `/api/requests?status=` | กรองตามสถานะ | — | `200` + array | — |
+| `GET` | `/api/requests/:id` | ดูคำร้องใบเดียว | — | `200` + object | `404` ไม่พบ |
+| `POST` | `/api/requests` | สร้างคำร้องใหม่ | Request (ไม่ต้องมี `id`, `status`) | `201` + object ที่สร้าง | `400` ข้อมูลไม่ถูกต้อง |
+| `PUT` | `/api/requests/:id` | เปลี่ยนสถานะ | `{ "status": "..." }` | `200` + object ที่แก้แล้ว | `400` สถานะผิด · `404` ไม่พบ |
+| `DELETE` | `/api/requests/:id` | ลบคำร้อง | — | `204` ไม่มี body | `404` ไม่พบ |
+
+---
+
+## ตัวอย่างการเรียกใช้
+
+### GET /api/requests
+
+```http
+GET /api/requests HTTP/1.1
+Host: localhost:3001
+```
+
+```json
+[
+  {
+    "id": "REQ-001",
+    "requesterName": "สมชาย ใจดี",
+    "requestType": "แจ้งซ่อม",
+    "location": "ห้องปฏิบัติการ 301",
+    "details": "เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า",
+    "priority": "urgent",
+    "status": "pending"
+  }
+]
+```
+
+### POST /api/requests
+
+```http
+POST /api/requests HTTP/1.1
+Content-Type: application/json
+
+{
+  "requesterName": "สุภาวดี รักเรียน",
+  "requestType": "ขอใช้อุปกรณ์",
+  "location": "ห้องประชุม 2",
+  "details": "ขอยืมโปรเจกเตอร์สำหรับนำเสนอ",
+  "priority": "normal"
+}
+```
+
+**201 Created**
+
+```json
+{
+  "id": "REQ-MTYOA3MX-YEX9",
+  "requesterName": "สุภาวดี รักเรียน",
+  "requestType": "ขอใช้อุปกรณ์",
+  "location": "ห้องประชุม 2",
+  "details": "ขอยืมโปรเจกเตอร์สำหรับนำเสนอ",
+  "priority": "normal",
+  "status": "pending"
+}
+```
+
+**400 Bad Request** — เมื่อข้อมูลไม่ถูกต้อง
+
+```json
+{
+  "error": "ข้อมูลคำร้องไม่ถูกต้อง",
+  "details": [
+    "ชื่อผู้แจ้งต้องมีอย่างน้อย 2 ตัวอักษร",
+    "รายละเอียดต้องมีอย่างน้อย 10 ตัวอักษร"
+  ]
+}
+```
+
+### PUT /api/requests/:id
+
+```http
+PUT /api/requests/REQ-001 HTTP/1.1
+Content-Type: application/json
+
+{ "status": "in-progress" }
+```
+
+**200 OK** — คืนคำร้องที่อัปเดตแล้ว
+
+### DELETE /api/requests/:id
+
+**204 No Content** — ไม่มี body ส่งกลับ
+
+---
+
+## รูปแบบ Error
+
+ทุก error ตอบเป็น JSON ที่มี field `error` เสมอ
+
+```json
+{ "error": "ข้อความที่ผู้ใช้ทั่วไปอ่านเข้าใจ" }
+```
+
+กรณี validation จะมี `details` เพิ่มมาเป็น array บอกว่าผิดตรงไหนบ้าง
+
+| Status | เมื่อไหร่ | ฝั่งไหนผิด |
+|---|---|---|
+| `400` | ข้อมูลที่ส่งมาไม่ถูกต้อง | ผู้ใช้ |
+| `404` | ไม่พบทรัพยากรที่ขอ | ผู้ใช้ |
+| `500` | โค้ดเซิร์ฟเวอร์ผิดพลาด | เซิร์ฟเวอร์ |
+
+> **ตอน production จะไม่ส่ง stack trace กลับไป** — เปิดเผยโครงสร้างภายในให้คนภายนอกเห็นไม่ได้
+
+---
+
+## CORS
+
+API อนุญาตให้เรียกจาก origin ที่กำหนดใน `CORS_ORIGIN` เท่านั้น
+
+```
+Access-Control-Allow-Origin: http://localhost:5173
+```
+
+**ถ้าเรียกจาก origin อื่น** เบราว์เซอร์จะบล็อกก่อนที่โค้ดจะได้เห็น response — จะเห็น error ใน Console ว่าถูกบล็อกโดย CORS policy
+
+> ⚠ CORS เป็นกลไกของ **เบราว์เซอร์** เท่านั้น · Postman และ curl ไม่ถูกบล็อก เพราะไม่ใช่เบราว์เซอร์
+
+---
+
+## Environment Variables
+
+### ฝั่ง API (`api/.env`)
+
+| ตัวแปร | ค่าเริ่มต้น | คำอธิบาย |
+|---|---|---|
+| `PORT` | `3001` | พอร์ตที่ API รับคำขอ |
+| `CORS_ORIGIN` | `http://localhost:5173` | origin ที่อนุญาตให้เรียก |
+| `NODE_ENV` | `development` | `production` จะเปลี่ยนรูปแบบ log และซ่อน stack trace |
+
+### ฝั่ง Frontend (`frontend/.env.local`)
+
+| ตัวแปร | ค่าเริ่มต้น | คำอธิบาย |
+|---|---|---|
+| `VITE_API_BASE_URL` | `http://localhost:3001` | ที่อยู่ของ API |
+
+> **ต้องขึ้นต้นด้วย `VITE_`** ไม่งั้น Vite จะไม่ส่งค่าไปให้โค้ดฝั่งเบราว์เซอร์
+> และ**ห้าม commit ไฟล์ `.env`** — ใช้ `.env.example` เป็นตัวอย่างแทน
+
+---
+
+## การรันทั้งระบบ
+
+ต้องเปิด **2 terminal** พร้อมกัน
+
+```bash
+# Terminal 1 — API
+cd api && npm run dev          # http://localhost:3001
+
+# Terminal 2 — Frontend
+cd frontend && npm run dev     # http://localhost:5173
+```
+
+**ลำดับสำคัญ** — เปิด API ก่อนเสมอ ไม่งั้น frontend จะขึ้นข้อความว่าติดต่อเซิร์ฟเวอร์ไม่ได้
+
+---
+
+## Data Model / โครงสร้างฐานข้อมูล (CP34)
+
+ในสัปดาห์ที่ 10 ระบบได้เปลี่ยนการจัดเก็บข้อมูลจากไฟล์ JSON มาเป็นฐานข้อมูลเชิงสัมพันธ์ **SQLite** (`campus.db`) โดยมีโครงสร้างตารางและความสัมพันธ์ดังนี้:
+
+### โครงสร้างตาราง (Database Schema)
+
+#### 1. ตาราง `users` (ผู้ใช้งานระบบ)
+| Column | Type | Constraints | คำอธิบาย |
+|---|---|---|---|
+| `id` | INTEGER | PRIMARY KEY AUTOINCREMENT | รหัสผู้ใช้ |
+| `name` | TEXT | NOT NULL UNIQUE | ชื่อ-นามสกุลผู้ใช้ |
+| `department` | TEXT | NOT NULL DEFAULT 'ไม่ระบุ' | แผนก/สาขาวิชา |
+| `email` | TEXT | NOT NULL UNIQUE | อีเมลผู้ใช้ |
+| `created_at` | DATETIME | DEFAULT CURRENT_TIMESTAMP | วันเวลาที่สร้าง |
+
+#### 2. ตาราง `requests` (คำร้องขอรับบริการ)
+| Column | Type | Constraints | คำอธิบาย |
+|---|---|---|---|
+| `id` | TEXT | PRIMARY KEY | รหัสคำร้อง เช่น `REQ-001` |
+| `requester_id`| INTEGER | NOT NULL, REFERENCES users(id) | รหัสผู้แจ้ง (Foreign Key) |
+| `request_type`| TEXT | NOT NULL | ประเภทคำร้อง |
+| `location` | TEXT | NOT NULL | สถานที่ |
+| `details` | TEXT | NOT NULL | รายละเอียดคำร้อง |
+| `priority` | TEXT | NOT NULL DEFAULT 'normal' | ระดับความสำคัญ (`normal`, `urgent`) |
+| `status` | TEXT | NOT NULL DEFAULT 'pending' | สถานะ (`pending`, `in-progress`, `completed`) |
+| `created_at` | DATETIME | DEFAULT CURRENT_TIMESTAMP | วันเวลาที่สร้างคำร้อง |
+
+### ข้อสังเกตเรื่องรูปแบบ (Data Model vs API Shape)
+
+โครงสร้างข้อมูลในฐานข้อมูล**ไม่เหมือน**กับรูปแบบที่ API ส่งออก:
+- **ในฐานข้อมูล:** เก็บ `requester_id` (ตัวเลขจำนวนเต็ม) และอ้างอิงไปยังตาราง `users` ตามหลัก Normalization เพื่อลดความซ้ำซ้อนของข้อมูลผู้ใช้
+- **ใน API Response:** คืน `requesterName` (ข้อความชื่อผู้แจ้ง) เพราะ Frontend ต้องการแสดงชื่อผู้แจ้งทันทีโดยไม่ต้องยิงดึงข้อมูลผู้ใช้อีกรอบ
+- **การแปลงข้อมูล:** ชั้น **Service (`requestService.js`)** ทำหน้าที่เป็นตัวแปลงระหว่าง 2 ฝั่ง โดยใช้คำสั่ง `JOIN users u ON u.id = r.requester_id` และใช้ `AS requesterName` ในคำสั่ง SQL
+
+### พฤติกรรมของ POST (สำคัญ ⭐)
+
+> ⚠ **การสร้างผู้ใช้อัตโนมัติ (Auto User Creation):**
+> 
+> เมื่อมีการเรียก `POST /api/requests` แล้วส่ง `requesterName` ที่**ยังไม่มีอยู่ในระบบ**:
+> 1. ฟังก์ชัน `resolveUserId()` ใน `requestService.js` จะค้นหาชื่อในตาราง `users`
+> 2. หากไม่พบ **ระบบจะทำการ INSERT ผู้ใช้รายใหม่ลงในตาราง `users` ให้อัตโนมัติทันที** ก่อนที่จะสร้างคำร้อง
+> 
+> **ทำไมต้องระบุใน Contract:** นี่เป็นพฤติกรรม Side-Effect ที่**ไม่สามารถคาดเดาได้จากการดูแค่ Endpoint** หากไม่ได้บันทึกไว้ ผู้พัฒนาฝั่ง Client หรือทีมอื่นที่มาใช้งาน API อาจไม่ทราบว่าการยิงคำร้องอาจเพิ่ม Record ในตาราง `users` ได้
+
+---
+
+## ประวัติการเปลี่ยนแปลง (Version History)
+
+| เวอร์ชัน | วันที่ | รายละเอียดการเปลี่ยนแปลง |
+|---|---|---|
+| `1.0.0` | สัปดาห์ที่ 6–7 | เวอร์ชันเริ่มต้น รองรับ CRUD สำหรับ Requests โดยจัดเก็บข้อมูลลงไฟล์ JSON |
+| `2.0.0` | สัปดาห์ที่ 10 | เปลี่ยนระบบจัดเก็บข้อมูลเบื้องหลังเป็น **SQLite (`campus.db`)**, ใช้ Parameterized Queries ป้องกัน SQL Injection, รองรับ Auto User Resolution, และเพิ่ม Transaction ในการสร้างคำร้อง |
+
+---
+
+## ผลการทดสอบ SQL Injection (CP31)
+
+ได้ทำการทดสอบการโจมตีช่องโหว่ SQL Injection ผ่าน Query Parameter `?status=` เพื่อพิสูจน์ประสิทธิภาพของ Parameterized Query:
+
+### ① เงื่อนไขที่เป็นจริงเสมอ (Always True)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status=x'%20OR%20'1'='1`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** โค้ดใช้ `db.prepare('... WHERE r.status = ?').all(status)` ซึ่งเป็น Parameterized Query ค่า `x' OR '1'='1` จึงถูกส่งไปให้ฐานข้อมูลในฐานะ "ข้อความค้นหา (String Literal)" ตัวเดียว ไม่ถูกนำไปประมวลผลเป็นเงื่อนไข Boolean logic `OR` ใน SQL
+
+### ② พยายามลบตาราง (Stacked Query / DROP TABLE)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status='%3B%20DROP%20TABLE%20requests%3B%20--`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** เครื่องหมาย `;` และคำสั่ง `DROP TABLE` ถูกมองเป็นเพียงตัวอักษรธรรมดาภายในสตริงของค่า `status` ไม่ได้ปิด Statement เดิมและไม่เริ่ม Statement ใหม่ ตาราง `requests` จึงไม่ถูกลบและยังคงอยู่ครบถ้วน
+
+### ③ ต่อเงื่อนไขเพิ่ม (Additional Condition)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status=pending'%20OR%20status='completed`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** ระบบค้นหาแถวที่มีสถานะตรงกับข้อความ `"pending' OR status='completed"` แบบทั้งก้อน ซึ่งไม่มีข้อมูลสถานะนี้ในระบบ จึงคืนค่าเป็นอาเรย์ว่าง `[]` โดยไม่ข้ามไปดึงข้อมูลที่มีสถานะ `completed` ออกมา
+
+### ④ พิสูจน์สถานะของตารางหลังทดสอบ
+
+- **คำสั่งที่ทดสอบ:** `GET /api/requests`
+- **ผลที่ได้:** ได้รับข้อมูลคำร้องทั้งหมดตามปกติ (HTTP 200 OK) ยืนยันว่าตาราง `requests` ยังคงอยู่ในฐานข้อมูล ไม่ได้รับความเสียหายจากการโจมตี
+
