@@ -11,3 +11,8 @@ Thumbs.db
 # docs/ เป็นผล build สำหรับ GitHub Pages และต้อง commit
 !docs/
 !docs/**
+
+# SQLite temporary & lock files (ห้าม ignore campus.db)
+*.db-journal
+*.db-wal
+*.db-shm
