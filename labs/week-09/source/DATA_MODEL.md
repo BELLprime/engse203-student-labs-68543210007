@@ -139,6 +139,8 @@ REQ-001 | สมชาย ใจดี | pending
   VALUES ('REQ-TEST-FK', 99999, 'แจ้งซ่อม', 'ห้องทดสอบ', 'ทดสอบ Foreign Key');
   ```
 * **ผลลัพธ์:** `FOREIGN KEY constraint failed` (ถูกปฏิเสธสำเร็จ เนื่องจากไม่มี `users.id = 99999`)
+* **ภาพหลักฐาน:**  
+  ![Foreign Key Constraint](../evidence/images/Foreign_Key_Constraint.png)
 
 ### ② Check Constraint
 * **คำสั่งที่ทดสอบ:**
@@ -147,6 +149,8 @@ REQ-001 | สมชาย ใจดี | pending
   VALUES ('REQ-TEST-CK', 1, 'แจ้งซ่อม', 'ห้องทดสอบ', 'ทดสอบ Check', 'ยกเลิก');
   ```
 * **ผลลัพธ์:** `CHECK constraint failed` (ถูกปฏิเสธสำเร็จ เนื่องจากสถานะต้องเป็น 'pending', 'in-progress' หรือ 'completed' เท่านั้น)
+* **ภาพหลักฐาน:**  
+  ![Check Constraint](../evidence/images/Check-Constraint.png)
 
 ### ③ Unique Constraint
 * **คำสั่งที่ทดสอบ:**
@@ -155,6 +159,8 @@ REQ-001 | สมชาย ใจดี | pending
   VALUES ('สมชาย อีกคน', 'วิศวกรรมซอฟต์แวร์', 'somchai@rmutl.ac.th');
   ```
 * **ผลลัพธ์:** `UNIQUE constraint failed: users.email` (ถูกปฏิเสธสำเร็จ เนื่องจากอีเมลนี้มีอยู่ในระบบแล้ว)
+* **ภาพหลักฐาน:**  
+  ![Unique Constraint](../evidence/images/Unique-Constraint.png)
 
 ### ④ Primary Key / Unique ID
 * **คำสั่งที่ทดสอบ:**
@@ -163,6 +169,8 @@ REQ-001 | สมชาย ใจดี | pending
   VALUES ('REQ-001', 1, 'แจ้งซ่อม', 'ห้องทดสอบ', 'ทดสอบ ID ซ้ำ');
   ```
 * **ผลลัพธ์:** `UNIQUE constraint failed: requests.id` (ถูกปฏิเสธสำเร็จ เนื่องจากรหัส 'REQ-001' มีอยู่แล้ว)
+* **ภาพหลักฐาน:**  
+  ![Unique ID Constraint](../evidence/images/Unique-D.png)
 
 ### ⑤ Not Null Constraint
 * **คำสั่งที่ทดสอบ:**
@@ -171,3 +179,6 @@ REQ-001 | สมชาย ใจดี | pending
   VALUES ('REQ-TEST-NN', 1, 'แจ้งซ่อม', 'ทดสอบลืมใส่ location');
   ```
 * **ผลลัพธ์:** `NOT NULL constraint failed: requests.location` (ถูกปฏิเสธสำเร็จ เนื่องจากไม่ได้ระบุ `location`)
+* **ภาพหลักฐาน:**  
+  ![Not Null Constraint](../evidence/images/Not-Null-Constraint.png)
+
