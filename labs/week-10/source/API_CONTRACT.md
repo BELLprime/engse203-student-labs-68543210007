@@ -187,3 +187,68 @@ cd frontend && npm run dev     # http://localhost:5173
 ```
 
 **ลำดับสำคัญ** — เปิด API ก่อนเสมอ ไม่งั้น frontend จะขึ้นข้อความว่าติดต่อเซิร์ฟเวอร์ไม่ได้
+
+---
+
+## Data Model / โครงสร้างฐานข้อมูล (CP34)
+
+ในสัปดาห์ที่ 10 ระบบได้เปลี่ยนการจัดเก็บข้อมูลจากไฟล์ JSON มาเป็นฐานข้อมูลเชิงสัมพันธ์ **SQLite** (`campus.db`) โดยมีโครงสร้างตารางและความสัมพันธ์ดังนี้:
+
+### โครงสร้างตาราง (Database Schema)
+
+#### 1. ตาราง `users` (ผู้ใช้งานระบบ)
+| Column | Type | Constraints | คำอธิบาย |
+|---|---|---|---|
+| `id` | INTEGER | PRIMARY KEY AUTOINCREMENT | รหัสผู้ใช้ |
+| `name` | TEXT | NOT NULL UNIQUE | ชื่อ-นามสกุลผู้ใช้ |
+| `department` | TEXT | NOT NULL DEFAULT 'ไม่ระบุ' | แผนก/สาขาวิชา |
+| `email` | TEXT | NOT NULL UNIQUE | อีเมลผู้ใช้ |
+| `created_at` | DATETIME | DEFAULT CURRENT_TIMESTAMP | วันเวลาที่สร้าง |
+
+#### 2. ตาราง `requests` (คำร้องขอรับบริการ)
+| Column | Type | Constraints | คำอธิบาย |
+|---|---|---|---|
+| `id` | TEXT | PRIMARY KEY | รหัสคำร้อง เช่น `REQ-001` |
+| `requester_id`| INTEGER | NOT NULL, REFERENCES users(id) | รหัสผู้แจ้ง (Foreign Key) |
+| `request_type`| TEXT | NOT NULL | ประเภทคำร้อง |
+| `location` | TEXT | NOT NULL | สถานที่ |
+| `details` | TEXT | NOT NULL | รายละเอียดคำร้อง |
+| `priority` | TEXT | NOT NULL DEFAULT 'normal' | ระดับความสำคัญ (`normal`, `urgent`) |
+| `status` | TEXT | NOT NULL DEFAULT 'pending' | สถานะ (`pending`, `in-progress`, `completed`) |
+| `created_at` | DATETIME | DEFAULT CURRENT_TIMESTAMP | วันเวลาที่สร้างคำร้อง |
+
+### การแปลงข้อมูลระหว่าง Database กับ API (Data Mapping)
+
+เนื่องจากฐานข้อมูลจัดเก็บแบบ Normalization (ใช้ `requester_id` เชื่อมโยงกับ `users.id`) แต่ API Contract และ Frontend ต้องการข้อมูลในรูป `requesterName`:
+- **Query (SELECT):** ใช้ `JOIN users u ON u.id = r.requester_id` และกำหนด alias `u.name AS requesterName`, `r.request_type AS requestType` เพื่อให้ได้ Shape ตรงกับ API Contract เดิม 100%
+- **Create (INSERT):** ฟังก์ชัน `resolveUserId(name)` จะค้นหา `id` ของผู้ใช้จากตาราง `users` หากยังไม่มี จะสร้างใหม่อัตโนมัติ เพื่อนำ `user.id` ไปบันทึกลงฟิลด์ `requester_id`
+
+---
+
+## ผลการทดสอบ SQL Injection (CP31)
+
+ได้ทำการทดสอบการโจมตีช่องโหว่ SQL Injection ผ่าน Query Parameter `?status=` เพื่อพิสูจน์ประสิทธิภาพของ Parameterized Query:
+
+### ① เงื่อนไขที่เป็นจริงเสมอ (Always True)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status=x'%20OR%20'1'='1`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** โค้ดใช้ `db.prepare('... WHERE r.status = ?').all(status)` ซึ่งเป็น Parameterized Query ค่า `x' OR '1'='1` จึงถูกส่งไปให้ฐานข้อมูลในฐานะ "ข้อความค้นหา (String Literal)" ตัวเดียว ไม่ถูกนำไปประมวลผลเป็นเงื่อนไข Boolean logic `OR` ใน SQL
+
+### ② พยายามลบตาราง (Stacked Query / DROP TABLE)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status='%3B%20DROP%20TABLE%20requests%3B%20--`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** เครื่องหมาย `;` และคำสั่ง `DROP TABLE` ถูกมองเป็นเพียงตัวอักษรธรรมดาภายในสตริงของค่า `status` ไม่ได้ปิด Statement เดิมและไม่เริ่ม Statement ใหม่ ตาราง `requests` จึงไม่ถูกลบและยังคงอยู่ครบถ้วน
+
+### ③ ต่อเงื่อนไขเพิ่ม (Additional Condition)
+
+- **คำสั่งที่ยิง:** `GET /api/requests?status=pending'%20OR%20status='completed`
+- **ผลที่ได้:** `[]` (0 รายการ) ✓ ถูกป้องกัน
+- **เหตุผล:** ระบบค้นหาแถวที่มีสถานะตรงกับข้อความ `"pending' OR status='completed"` แบบทั้งก้อน ซึ่งไม่มีข้อมูลสถานะนี้ในระบบ จึงคืนค่าเป็นอาเรย์ว่าง `[]` โดยไม่ข้ามไปดึงข้อมูลที่มีสถานะ `completed` ออกมา
+
+### ④ พิสูจน์สถานะของตารางหลังทดสอบ
+
+- **คำสั่งที่ทดสอบ:** `GET /api/requests`
+- **ผลที่ได้:** ได้รับข้อมูลคำร้องทั้งหมดตามปกติ (HTTP 200 OK) ยืนยันว่าตาราง `requests` ยังคงอยู่ในฐานข้อมูล ไม่ได้รับความเสียหายจากการโจมตี
+

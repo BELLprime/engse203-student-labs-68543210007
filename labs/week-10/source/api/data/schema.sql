@@ -1,66 +1,78 @@
--- ═══════════════════════════════════════════════════════════
--- Campus Service Request — โครงสร้างฐานข้อมูล
--- ENGSE203 สัปดาห์ที่ 9 · หน่วยที่ 4
---
--- 🏠 TODO W09-SCHEMA (CP23)
--- ไฟล์นี้ต้องรันแล้วสร้างฐานข้อมูลได้ครบทั้งหมดในครั้งเดียว
--- และต้อง "รันซ้ำได้" โดยไม่ error
--- ═══════════════════════════════════════════════════════════
 
-PRAGMA foreign_keys = ON;
+-- ① คำร้องทั้งหมด เรียงตามรหัส
+SELECT * FROM requests ORDER BY id; 
 
--- TODO ①  ลบตารางเดิมก่อน เพื่อให้รันไฟล์นี้ซ้ำได้
---         ⚠ ลำดับสำคัญ — ต้องลบตารางที่มี foreign key ก่อน
---         คำใบ้: DROP TABLE IF EXISTS ...
+-- ② คำร้องที่ยังไม่ได้ดำเนินการ (status = 'pending')
+SELECT id, location, details FROM requests 
+WHERE status = 'pending' 
+ORDER BY id;
 
+-- ③ คำร้องเร่งด่วนที่ยังไม่เสร็จ — ใช้เงื่อนไข 2 ข้อพร้อมกัน
+SELECT id, location, details FROM requests
+WHERE priority = 'urgent' AND status IN ('pending', 'in-progress')
+ORDER BY id ;
 
--- TODO ②  สร้างตาราง users
---         ต้องมี: id (PK, INTEGER, AUTOINCREMENT)
---                name (TEXT, ห้ามว่าง)
---                department (TEXT, ห้ามว่าง)
---                email (TEXT, ห้ามว่าง, ห้ามซ้ำ)
-CREATE TABLE users (
-  id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  name        TEXT NOT NULL,
-  department  TEXT NOT NULL,
-  email       TEXT NOT NULL UNIQUE
-);
--- TODO ③  สร้างตาราง requests
---         ต้องมี: id (PK, TEXT — ใช้รหัสแบบ REQ-001)
---                requester_id (INTEGER, ห้ามว่าง, ชี้ไป users(id))
---                request_type (TEXT, ห้ามว่าง, จำกัดค่าด้วย CHECK)
---                location, details (TEXT, ห้ามว่าง)
---                priority (ค่าเริ่มต้น 'normal', จำกัดด้วย CHECK)
---                status (ค่าเริ่มต้น 'pending', จำกัดด้วย CHECK)
---                created_at (ค่าเริ่มต้นเป็นเวลาปัจจุบัน)
---
---         ⚠ อย่าลืม FOREIGN KEY — เป็นหัวใจของสัปดาห์นี้
-CREATE TABLE requests (
-  id            TEXT PRIMARY KEY,
-  requester_id  INTEGER NOT NULL,
-  request_type  TEXT NOT NULL
-                CHECK (request_type IN ('แจ้งซ่อม','บริการบัญชีผู้ใช้','ขอใช้อุปกรณ์','อื่น ๆ')),
-  location      TEXT NOT NULL,
-  details       TEXT NOT NULL,
-  priority      TEXT NOT NULL DEFAULT 'normal'
-                CHECK (priority IN ('normal','urgent')),
-  status        TEXT NOT NULL DEFAULT 'pending'
-                CHECK (status IN ('pending','in-progress','completed')),
-  created_at    TEXT NOT NULL DEFAULT (datetime('now','localtime')),
+-- ④ ค้นคำร้องจากคำบางส่วนในรายละเอียด  (คำใบ้: LIKE)
+SELECT id, location, details 
+FROM requests 
+WHERE details LIKE '%ไม่ทำงาน%';
+ORDER BY id;
 
-  FOREIGN KEY (requester_id) REFERENCES users(id)
-);
--- TODO ④  ใส่ข้อมูลตั้งต้น
---         users อย่างน้อย 4 คน · requests อย่างน้อย 5 รายการ
-INSERT INTO users (name, department, email) VALUES
-  ('สมชาย ใจดี',      'วิศวกรรมซอฟต์แวร์', 'somchai@rmutl.ac.th'),
-  ('สุภาวดี รักเรียน', 'วิศวกรรมซอฟต์แวร์', 'supawadee@rmutl.ac.th'),
-  ('ธนกฤต ตั้งใจ',     'วิศวกรรมไฟฟ้า',     'thanakrit@rmutl.ac.th'),
-  ('ปรียา ขยันยิ่ง',   'สำนักวิทยบริการ',   'preeya@rmutl.ac.th');
+-- ⑤ คำร้องพร้อมชื่อผู้แจ้ง  ← ต้องใช้ JOIN เพราะชื่ออยู่คนละตาราง
+SELECT 
+  r.id,
+  u.name AS requester_name,
+  r.request_type,
+  r.location,
+  r.status
+FROM requests r
+JOIN users u ON r.requester_id = u.id
+ORDER BY r.id;
+
+-- ⑥ คำร้องเฉพาะของภาควิชาหนึ่ง  (JOIN + WHERE)
+SELECT 
+  r.id,
+  u.name AS requester_name,
+  u.department,
+  r.request_type,
+  r.location,
+  r.status
+FROM requests r
+JOIN users u ON r.requester_id = u.id
+WHERE u.department = 'วิศวกรรมซอฟต์แวร์'
+ORDER BY r.id;
+
+-- ⑦ รายชื่อผู้แจ้งที่ไม่ซ้ำกัน  (คำใบ้: DISTINCT)
+SELECT DISTINCT u.name, u.department
+FROM users u
+JOIN requests r ON r.requester_id = u.id
+ORDER BY u.name;
+
+-- ⑧ คำร้อง 3 รายการล่าสุด  (คำใบ้: ORDER BY + LIMIT)
+SELECT r.id, r.request_type, r.location, r.details, r.created_at
+FROM users u
+JOIN requests r ON r.requester_id = u.id
+ORDER BY r.id DESC
+LIMIT 3;
 
 INSERT INTO requests (id, requester_id, request_type, location, details, priority, status) VALUES
-  ('REQ-001', 1, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 301', 'เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า', 'urgent', 'pending'),
-  ('REQ-002', 2, 'บริการบัญชีผู้ใช้', 'อาคารวิศวกรรม',      'เข้าสู่ระบบห้องปฏิบัติการไม่ได้',     'normal', 'in-progress'),
-  ('REQ-003', 3, 'ขอใช้อุปกรณ์',      'ห้องประชุม 2',        'ขอยืมโปรเจกเตอร์',                 'normal', 'completed'),
-  ('REQ-004', 1, 'แจ้งซ่อม',          'ห้องปฏิบัติการ 302', 'คอมพิวเตอร์เครื่องที่ 5 เปิดไม่ติด', 'urgent', 'pending'),
-  ('REQ-005', 4, 'อื่น ๆ',             'ห้องสมุด ชั้น 2',     'ขอเพิ่มปลั๊กไฟบริเวณโต๊ะอ่านหนังสือ', 'normal', 'pending');
+  ('REQ-006', 2, 'แจ้งซ่อม', 'ห้องปฏิบัติการ 401', 'ไฟในห้องกะพริบตลอดเวลา', 'normal', 'pending'),
+  ('REQ-007', 3, 'บริการบัญชีผู้ใช้', 'อาคาร 1', 'ลืมรหัสผ่านอีเมลมหาวิทยาลัย', 'normal', 'completed'),
+  ('REQ-008', 4, 'อื่น ๆ', 'ลานจอดรถ', 'ขอเพิ่มไฟส่องสว่างตอนกลางคืน', 'urgent', 'in-progress');
+
+-- ⭐ Challenge ─────────────────────────────────────────────
+-- ⑨ นับจำนวนคำร้องแยกตามสถานะ  (GROUP BY + COUNT)
+SELECT status, COUNT(*) AS total
+FROM requests
+GROUP BY status
+ORDER BY total DESC;
+-- ⑩ ใครแจ้งคำร้องมากที่สุด  (คำใบ้: LEFT JOIN เพื่อให้คนที่ยังไม่เคยแจ้งติดมาด้วย)
+SELECT u.name, u.department, COUNT(r.id) AS total
+FROM users u
+LEFT JOIN requests r ON r.requester_id = u.id
+GROUP BY u.id
+ORDER BY total DESC, u.name;
+-- ⑪ สร้าง INDEX ให้การค้นด้วย status เร็วขึ้น
+-- Index เหมือนดัชนีท้ายเล่มหนังสือ — แทนที่จะพลิกทุกหน้า ก็เปิดดัชนีแล้วกระโดดไปหน้าที่ต้องการเลย
+CREATE INDEX IF NOT EXISTS idx_requests_status ON requests(status);
+CREATE INDEX IF NOT EXISTS idx_requests_requester ON requests(requester_id);
