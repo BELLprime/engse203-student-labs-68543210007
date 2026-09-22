@@ -1,10 +1,10 @@
 {
   "week": "week-10",
   "title": "Node.js Database Integration (node:sqlite)",
-  "status": "ready",
+  "status": "submitted",
   "branch": "unit4/week-10",
   "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
-  "originalCommit": "",
+  "originalCommit": "83a25af",
   "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/10",
   "submissionTag": "lab-10-submission-v1",
   "testStatus": "pass",

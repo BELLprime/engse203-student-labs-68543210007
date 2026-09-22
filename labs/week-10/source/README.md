@@ -8,6 +8,8 @@
 - **ระบบปฏิบัติการที่ใช้:** Windows 11 / WSL2 (Ubuntu 24.04 LTS)
 - **Node version:** v22.23.1
 - **Branch:** `unit4/week-10`
+- **Commit:** `83a25af`
+- **Submission Tag:** `lab-10-submission-v1`
 - **วันที่ทดสอบ:** 22 กันยายน 2026
 
 ## URLs
@@ -15,7 +17,7 @@
 - **Repository:** [https://github.com/BELLprime/engse203-student-labs-68543210007](https://github.com/BELLprime/engse203-student-labs-68543210007)
 - **Pages Hub:** [https://BELLprime.github.io/engse203-student-labs-68543210007/](https://BELLprime.github.io/engse203-student-labs-68543210007/)
 - **Weekly Result:** [https://BELLprime.github.io/engse203-student-labs-68543210007/labs/week-10/](https://BELLprime.github.io/engse203-student-labs-68543210007/labs/week-10/)
-- **Pull Request:** *(ระบุเมื่อเปิด PR บน GitHub)*
+- **Pull Request:** [https://github.com/BELLprime/engse203-student-labs-68543210007/pull/10](https://github.com/BELLprime/engse203-student-labs-68543210007/pull/10)
 
 ---
 
