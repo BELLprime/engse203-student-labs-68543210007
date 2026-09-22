@@ -13,7 +13,9 @@ export const config = {
   dbFile: process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus.db'),
   schemaFile: process.env.SCHEMA_FILE ?? path.join(API_ROOT, 'data', 'schema.sql'),
   port: Number(process.env.PORT ?? 3001),
-  corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  corsOrigin: process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim())
+    : ['http://localhost:5173', 'https://bellprime.github.io'],
   nodeEnv: process.env.NODE_ENV ?? 'development',
   get isProduction() {
     return this.nodeEnv === 'production';
