@@ -4,13 +4,13 @@
   "status": "submitted",
   "branch": "unit4/week-10",
   "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
-  "originalCommit": "83a25af",
+  "originalCommit": "3d0e5be",
   "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/10",
   "submissionTag": "lab-10-submission-v1",
   "testStatus": "pass",
   "notes": "เชื่อมต่อ Node.js เข้ากับ SQLite ด้วย node:sqlite, Data Mapping (JOIN/AS), Parameterized Queries ป้องกัน SQL Injection (CP31), Database Error Handling ด้วย AppError (CP32), Automated Testing ด้วย supertest (CP33), API Contract v2.0.0 (CP34), และ Challenge ครบถ้วน (31/31 รายการ)",
   "pageUrl": "https://BELLprime.github.io/engse203-student-labs-68543210007/labs/week-10/",
   "sourceUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/tree/unit4/week-10/labs/week-10/source",
-  "hasPublish": false,
+  "hasPublish": true,
   "sourceEntries": 7
 }
