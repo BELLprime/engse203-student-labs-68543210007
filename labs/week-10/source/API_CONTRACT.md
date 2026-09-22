@@ -217,11 +217,31 @@ cd frontend && npm run dev     # http://localhost:5173
 | `status` | TEXT | NOT NULL DEFAULT 'pending' | สถานะ (`pending`, `in-progress`, `completed`) |
 | `created_at` | DATETIME | DEFAULT CURRENT_TIMESTAMP | วันเวลาที่สร้างคำร้อง |
 
-### การแปลงข้อมูลระหว่าง Database กับ API (Data Mapping)
+### ข้อสังเกตเรื่องรูปแบบ (Data Model vs API Shape)
 
-เนื่องจากฐานข้อมูลจัดเก็บแบบ Normalization (ใช้ `requester_id` เชื่อมโยงกับ `users.id`) แต่ API Contract และ Frontend ต้องการข้อมูลในรูป `requesterName`:
-- **Query (SELECT):** ใช้ `JOIN users u ON u.id = r.requester_id` และกำหนด alias `u.name AS requesterName`, `r.request_type AS requestType` เพื่อให้ได้ Shape ตรงกับ API Contract เดิม 100%
-- **Create (INSERT):** ฟังก์ชัน `resolveUserId(name)` จะค้นหา `id` ของผู้ใช้จากตาราง `users` หากยังไม่มี จะสร้างใหม่อัตโนมัติ เพื่อนำ `user.id` ไปบันทึกลงฟิลด์ `requester_id`
+โครงสร้างข้อมูลในฐานข้อมูล**ไม่เหมือน**กับรูปแบบที่ API ส่งออก:
+- **ในฐานข้อมูล:** เก็บ `requester_id` (ตัวเลขจำนวนเต็ม) และอ้างอิงไปยังตาราง `users` ตามหลัก Normalization เพื่อลดความซ้ำซ้อนของข้อมูลผู้ใช้
+- **ใน API Response:** คืน `requesterName` (ข้อความชื่อผู้แจ้ง) เพราะ Frontend ต้องการแสดงชื่อผู้แจ้งทันทีโดยไม่ต้องยิงดึงข้อมูลผู้ใช้อีกรอบ
+- **การแปลงข้อมูล:** ชั้น **Service (`requestService.js`)** ทำหน้าที่เป็นตัวแปลงระหว่าง 2 ฝั่ง โดยใช้คำสั่ง `JOIN users u ON u.id = r.requester_id` และใช้ `AS requesterName` ในคำสั่ง SQL
+
+### พฤติกรรมของ POST (สำคัญ ⭐)
+
+> ⚠ **การสร้างผู้ใช้อัตโนมัติ (Auto User Creation):**
+> 
+> เมื่อมีการเรียก `POST /api/requests` แล้วส่ง `requesterName` ที่**ยังไม่มีอยู่ในระบบ**:
+> 1. ฟังก์ชัน `resolveUserId()` ใน `requestService.js` จะค้นหาชื่อในตาราง `users`
+> 2. หากไม่พบ **ระบบจะทำการ INSERT ผู้ใช้รายใหม่ลงในตาราง `users` ให้อัตโนมัติทันที** ก่อนที่จะสร้างคำร้อง
+> 
+> **ทำไมต้องระบุใน Contract:** นี่เป็นพฤติกรรม Side-Effect ที่**ไม่สามารถคาดเดาได้จากการดูแค่ Endpoint** หากไม่ได้บันทึกไว้ ผู้พัฒนาฝั่ง Client หรือทีมอื่นที่มาใช้งาน API อาจไม่ทราบว่าการยิงคำร้องอาจเพิ่ม Record ในตาราง `users` ได้
+
+---
+
+## ประวัติการเปลี่ยนแปลง (Version History)
+
+| เวอร์ชัน | วันที่ | รายละเอียดการเปลี่ยนแปลง |
+|---|---|---|
+| `1.0.0` | สัปดาห์ที่ 6–7 | เวอร์ชันเริ่มต้น รองรับ CRUD สำหรับ Requests โดยจัดเก็บข้อมูลลงไฟล์ JSON |
+| `2.0.0` | สัปดาห์ที่ 10 | เปลี่ยนระบบจัดเก็บข้อมูลเบื้องหลังเป็น **SQLite (`campus.db`)**, ใช้ Parameterized Queries ป้องกัน SQL Injection, รองรับ Auto User Resolution, และเพิ่ม Transaction ในการสร้างคำร้อง |
 
 ---
 
