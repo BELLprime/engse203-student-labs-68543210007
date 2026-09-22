@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { config } from "../config.js";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
+import { AppError } from "../middleware/errorHandler.js";
 
 const SCHEMA_FILE = config.schemaFile;
 const DB_FILE = config.dbFile;
@@ -81,7 +82,7 @@ export function findAll({ status } = {}) {
 
 export function findById(id) {
   /** TODO W10-4 (CP28) · SELECT ... WHERE r.id = ?  · ไม่พบให้คืน null */
-  return db.prepare(`${SELECT_SHAPE} WHERE r.id = ?`).get(id)?? null;
+  return db.prepare(`${SELECT_SHAPE} WHERE r.id = ?`).get(id) ?? null;
 }
 function resolveUserId(name) {
   const found = db.prepare("SELECT id FROM users WHERE name = ?").get(name);
@@ -103,20 +104,35 @@ function nextId() {
   return `REQ-${String(n).padStart(3, "0")}`;
 }
 
+function toAppError(err) {
+  const m = err.message ?? '';
+  if (m.includes('FOREIGN KEY')) return new AppError('อ้างถึงข้อมูลที่ไม่มีอยู่จริง', 400);
+  if (m.includes('CHECK'))       return new AppError('ค่าที่ส่งมาไม่อยู่ในรายการที่กำหนด', 400);
+  if (m.includes('UNIQUE'))      return new AppError('ข้อมูลนี้มีอยู่แล้วในระบบ', 409);
+  return err; // error อื่นปล่อยผ่าน → errorHandler ตอบ 500
+}
 export function create(input) {
   const id = nextId();
-  db.prepare(
-    `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    resolveUserId(input.requesterName.trim()),
-    input.requestType,
-    input.location.trim(),
-    input.details.trim(),
-    input.priority ?? "normal",
-  );
-  return findById(id); // คืนรูปแบบที่ frontend ต้องการ
+  db.exec('BEGIN');
+  try {
+    const requesterId = resolveUserId(input.requesterName.trim());
+    db.prepare(
+      `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    ).run(
+      id,
+      requesterId,
+      input.requestType,
+      input.location.trim(),
+      input.details.trim(),
+      input.priority ?? 'normal',
+    );
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw toAppError(err);
+  }
+  return findById(id);
 }
 
 export function updateStatus(id, status) {
