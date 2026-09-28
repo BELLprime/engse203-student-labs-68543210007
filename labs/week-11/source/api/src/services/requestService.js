@@ -55,7 +55,13 @@ export async function loadSeed() {
  *   - ถ้าเปิดได้ → { connected: true, driver: 'sqlite', tables: N }
  */
 export function getDbStatus() {
-  return { connected: false, reason: 'ยังไม่ได้ทำ TODO W11-DBSTATUS' };
+  try {
+    if (!db) return { connected: false, reason: 'ยังไม่ได้เปิดฐานข้อมูล' };
+    const n = db.prepare("SELECT COUNT(*) c FROM sqlite_master WHERE type='table'").get().c;
+    return { connected: true, driver: 'sqlite', tables: n };
+  } catch (e) {
+    return { connected: false, reason: e.message };
+  }
 }
 
 export function findAll({ status } = {}) {
