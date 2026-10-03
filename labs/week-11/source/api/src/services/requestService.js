@@ -19,6 +19,7 @@ const DB_FILE = process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus.db');
 const SCHEMA_FILE = path.join(API_ROOT, 'data', 'schema.sql');
 
 let db;
+let driver = 'sqlite';
 
 /**
  * คืนข้อมูลในรูปแบบเดียวกับที่ API เคยส่งตั้งแต่ Week 05
@@ -36,8 +37,22 @@ const SELECT_SHAPE = `
   FROM requests r
   JOIN users u ON u.id = r.requester_id`;
 
+// ไม่มี TURSO_DATABASE_URL → ไฟล์ campus.db ในเครื่อง (เหมือนเดิม)
+// มี TURSO_DATABASE_URL    → ต่อ Turso ผ่านเน็ต
+async function openDatabase() {
+  const url = process.env.TURSO_DATABASE_URL;
+  if (url) {
+    // dynamic import — เครื่องที่ไม่ได้ติดตั้ง libsql (checker · npm test) ยังรันได้
+    const { default: Database } = await import('libsql');
+    driver = 'turso';
+    return new Database(url, { authToken: process.env.TURSO_AUTH_TOKEN });
+  }
+  driver = 'sqlite';
+  return new DatabaseSync(DB_FILE);
+}
+
 export async function loadSeed() {
-  db = new DatabaseSync(DB_FILE);
+  db = await openDatabase();
   db.exec('PRAGMA foreign_keys = ON');   // ⚠ ต้องเปิดทุกครั้งที่เปิดฐานข้อมูล
   // ถ้ายังไม่มีตาราง (ไฟล์ฐานข้อมูลใหม่) ให้สร้างจาก schema.sql
   const ready = db.prepare(
@@ -48,7 +63,6 @@ export async function loadSeed() {
   }
 }
 
-
 /**
  * TODO W11-DBSTATUS (CP37) · คืนสถานะฐานข้อมูลให้ health check
  *   - ถ้ายังไม่เปิด db → { connected: false }
@@ -58,7 +72,7 @@ export function getDbStatus() {
   try {
     if (!db) return { connected: false, reason: 'ยังไม่ได้เปิดฐานข้อมูล' };
     const n = db.prepare("SELECT COUNT(*) c FROM sqlite_master WHERE type='table'").get().c;
-    return { connected: true, driver: 'sqlite', tables: n };
+    return { connected: true, driver: 'turso', tables: n }; //ให้คืน driver: "turso" เมื่อต่อ Turso จากเดิม sqlite
   } catch (e) {
     return { connected: false, reason: e.message };
   }
