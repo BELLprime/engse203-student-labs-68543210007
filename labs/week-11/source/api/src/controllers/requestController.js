@@ -7,6 +7,11 @@ export function listRequests(req, res) {
   res.status(200).json(service.findAll({ status }));
 }
 
+export function resetRequests(req, res) {
+  const list = service.resetDatabase();
+  res.status(200).json(list);
+}
+
 export function getRequest(req, res) {
   const found = service.findById(req.params.id);
   if (!found) {
