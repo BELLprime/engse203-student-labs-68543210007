@@ -6,7 +6,7 @@ import LoadingState from '../components/LoadingState.jsx';
 import RequestList from '../components/RequestList.jsx';
 import SummaryPanel from '../components/SummaryPanel.jsx';
 import useManualReload from '../hooks/useManualReload.js';
-import { deleteRequest, getRequests, resetRequests } from '../services/requestService.js';
+import { deleteRequest, getRequests, resetRequests ,updateRequestStatus } from '../services/requestService.js';
 
 function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,6 +76,16 @@ function DashboardPage() {
       setNotice(error instanceof Error ? error.message : 'คืนข้อมูลไม่สำเร็จ');
     }
   }
+  async function handleChangeStatus(requestId, nextStatus) {
+    try {
+      await updateRequestStatus(requestId, nextStatus);
+      const refreshed = await getRequests();
+      setRequests(refreshed);
+      setNotice(`อัปเดตสถานะคำร้อง ${requestId} เรียบร้อยแล้ว`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'อัปเดตสถานะไม่สำเร็จ');
+    }
+  }
 
   return (
     <section data-testid="page-dashboard">
@@ -97,7 +107,7 @@ function DashboardPage() {
           <SummaryPanel summary={summary} />
           <section className="panel" aria-labelledby="request-list-title">
             <div className="section-heading"><h2 id="request-list-title">รายการคำร้อง</h2><FilterBar value={statusFilter} onFilterChange={setStatusFilter} /></div>
-            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} onChangeStatus={handleChangeStatus} />
           </section>
         </>
       )}

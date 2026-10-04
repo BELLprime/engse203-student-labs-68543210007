@@ -63,6 +63,14 @@ export async function loadSeed() {
   }
 }
 
+export function resetDatabase() {
+  if (db && existsSync(SCHEMA_FILE)) {
+    db.exec('PRAGMA foreign_keys = ON');
+    db.exec(readFileSync(SCHEMA_FILE, 'utf8'));
+  }
+  return findAll();
+}
+
 /**
  * TODO W11-DBSTATUS (CP37) · คืนสถานะฐานข้อมูลให้ health check
  *   - ถ้ายังไม่เปิด db → { connected: false }
