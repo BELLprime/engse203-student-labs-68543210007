@@ -1,0 +1,13 @@
+{
+  "week": "week-11",
+  "title": "Production & Deployment (Full-Stack Campus Service)",
+  "status": "submitted",
+  "branch": "unit4/week-11",
+  "originalRepoUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007",
+  "originalCommit": "34e1997",
+  "pullRequestUrl": "https://github.com/BELLprime/engse203-student-labs-68543210007/pull/11",
+  "submissionTag": "lab-11-submission-v1",
+  "testStatus": "pass",
+  "liveUrl": "https://campus-service-68543210007-9.onrender.com",
+  "notes": "Full-Stack Production Simulation (Single Port 3001), 3-Tier Architecture (React + Express + SQLite/Turso), CI/CD Workflow (.github/workflows), Render Web Service Deployment, Turso Cloud Database Integration และหลักฐานการสาธิต A4 ครบถ้วน (41/41 รายการ)"
+}
