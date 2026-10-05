@@ -18,7 +18,19 @@ export const PRIORITIES = ['normal', 'urgent'];
 export const STATUSES = ['pending', 'in-progress', 'completed'];
 
 export const MIN_NAME = 2;
+export const MAX_NAME = 100;
+export const MAX_LOCATION = 100;
 export const MIN_DETAILS = 10;
+export const MAX_DETAILS = 1000;
+
+/** ตรวจช่องข้อความหนึ่งช่อง — คืนข้อความ error หรือ null */
+function checkText(value, label, { min = 1, max }) {
+  if (typeof value !== 'string') return `${label}ต้องเป็นข้อความ`;
+  const length = value.trim().length;
+  if (length < min) return min > 1 ? `${label}ต้องมีอย่างน้อย ${min} ตัวอักษร` : `กรุณาระบุ${label}`;
+  if (length > max) return `${label}ต้องไม่เกิน ${max} ตัวอักษร`;
+  return null;
+}
 
 function readText(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -29,7 +41,14 @@ export function validateRequestInput(input) {
     return ['ต้องส่งข้อมูลคำร้องมาด้วย'];
   }
 
-  const errors = [];
+  const errors = [
+    checkText(input.requesterName, 'ชื่อผู้แจ้ง', { min: MIN_NAME, max: MAX_NAME }),
+    REQUEST_TYPES.includes(input.requestType) ? null : 'ประเภทคำร้องไม่ถูกต้อง',
+    checkText(input.location, 'สถานที่', { max: MAX_LOCATION }),
+    checkText(input.details, 'รายละเอียด', { min: MIN_DETAILS, max: MAX_DETAILS }),
+    PRIORITIES.includes(input.priority) ? null : 'ความเร่งด่วนต้องเป็น normal หรือ urgent',
+  ];
+
   if (readText(input.requesterName).length < MIN_NAME) {
     errors.push(`ชื่อผู้แจ้งต้องมีอย่างน้อย ${MIN_NAME} ตัวอักษร`);
   }
@@ -45,7 +64,7 @@ export function validateRequestInput(input) {
   if (!PRIORITIES.includes(input.priority)) {
     errors.push('ความเร่งด่วนต้องเป็น normal หรือ urgent');
   }
-  return errors;
+  return errors.filter(Boolean);
 }
 
 /** สถานะที่ PUT /api/requests/:id รับได้ */
@@ -65,3 +84,21 @@ export function validateLoginInput(input) {
   }
   return errors;
 }
+
+// ════════ Week 13 · CP48 — เข้มขึ้น ════════
+describe('validateRequestInput — ชนิดข้อมูลและความยาวสูงสุด (Week 13)', () => {
+  test.each([123, ['สมชาย'], { first: 'สม' }, true])('ชื่อเป็น %j → "ต้องเป็นข้อความ"', (requesterName) => {
+    expect(validateRequestInput(withField({ requesterName }))).toContain('ชื่อผู้แจ้งต้องเป็นข้อความ');
+  });
+  test('ชื่อ 100 ตัวอักษร → ผ่าน · 101 → error', () => {
+    expect(validateRequestInput(withField({ requesterName: 'ก'.repeat(100) }))).toEqual([]);
+    expect(validateRequestInput(withField({ requesterName: 'ก'.repeat(101) }))).toHaveLength(1);
+  });
+  test('รายละเอียด 1000 ตัวอักษร → ผ่าน · 1001 → error', () => {
+    expect(validateRequestInput(withField({ details: 'ก'.repeat(1000) }))).toEqual([]);
+    expect(validateRequestInput(withField({ details: 'ก'.repeat(1001) }))).toHaveLength(1);
+  });
+  test('สถานที่ 101 ตัวอักษร → error', () => {
+    expect(validateRequestInput(withField({ location: 'ก'.repeat(101) }))).toHaveLength(1);
+  });
+});
