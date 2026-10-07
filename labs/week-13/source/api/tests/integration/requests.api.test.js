@@ -2,6 +2,7 @@ import { describe, test, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../../src/app.js';
 import { loadSeed } from '../../src/services/requestService.js';
+import { loginAsStaff,tokenFor  } from '../helpers/auth.js';
 
 /**
  * Integration test — ยิง HTTP จริงผ่านทุกชั้น: route → controller → service → SQLite
@@ -10,7 +11,11 @@ import { loadSeed } from '../../src/services/requestService.js';
  */
 
 const app = createApp();
-beforeEach(async () => { await loadSeed(); });
+let auth; // Week 13 — PUT/DELETE ต้องมี token ของเจ้าหน้าที่
+beforeEach(async () => {
+  await loadSeed();
+  auth = { Authorization: `Bearer ${await loginAsStaff(app)}` };
+});
 
 const valid = {
   requesterName: 'ทดสอบ อัตโนมัติ', requestType: 'แจ้งซ่อม',
@@ -66,7 +71,7 @@ describe('POST /api/requests', () => {
   });
   // 🐞 regression test — BUG #1: ลบแล้วเพิ่มใหม่ ได้ 500 (รหัสซ้ำ)
   test('ลบรายการกลาง แล้วเพิ่มใหม่ → 201 และรหัสไม่ซ้ำของเดิม', async () => {
-    await request(app).delete('/api/requests/REQ-002').expect(204);
+    await request(app).delete('/api/requests/REQ-002').set(auth).expect(204);
     const r = await request(app).post('/api/requests').send(valid);
     expect(r.status).toBe(201);
     const ids = (await request(app).get('/api/requests')).body.map((x) => x.id);
@@ -76,28 +81,28 @@ describe('POST /api/requests', () => {
 
 describe('PUT /api/requests/:id', () => {
   test('เปลี่ยนสถานะ → 200 และค่าใหม่ถูกบันทึก', async () => {
-    const r = await request(app).put('/api/requests/REQ-001').send({ status: 'completed' });
+    const r = await request(app).put('/api/requests/REQ-001').set(auth).send({ status: 'completed' });
     expect(r.status).toBe(200);
     expect(r.body.status).toBe('completed');
   });
   test('สถานะนอกรายการ → 400', async () => {
-    const r = await request(app).put('/api/requests/REQ-001').send({ status: 'done' });
+    const r = await request(app).put('/api/requests/REQ-001').set(auth).send({ status: 'done' });
     expect(r.status).toBe(400);
   });
   // 🐞 regression test — BUG #3: เปลี่ยนสถานะคำร้องที่ไม่มีอยู่ ได้ 500
   test('คำร้องที่ไม่มีอยู่ → 404 (ไม่ใช่ 500)', async () => {
-    const r = await request(app).put('/api/requests/REQ-999').send({ status: 'completed' });
+    const r = await request(app).put('/api/requests/REQ-999').set(auth).send({ status: 'completed' });
     expect(r.status).toBe(404);
   });
 });
 
 describe('DELETE /api/requests/:id', () => {
   test('ลบแล้ว GET ซ้ำ → 404', async () => {
-    await request(app).delete('/api/requests/REQ-003').expect(204);
+    await request(app).delete('/api/requests/REQ-003').set(auth).expect(204);
     await request(app).get('/api/requests/REQ-003').expect(404);
   });
   test('ลบรายการที่ไม่มี → 404', async () => {
-    await request(app).delete('/api/requests/REQ-999').expect(404);
+    await request(app).delete('/api/requests/REQ-999').set(auth).expect(404);
   });
 });
 
@@ -134,5 +139,30 @@ describe('ข้อมูลผิดรูปแบบและ endpoint ผู
     const r = await request(app).get('/api/users/1/requests');
     expect(r.status).toBe(200);
     expect(r.body.map((x) => x.id)).toEqual(['REQ-001', 'REQ-004']);
+  });
+});
+//CP51 week 13
+describe('สิทธิ์ของ PUT / DELETE', () => {   // มีอยู่แล้วใน starter — เติมต่อจาก test 'ไม่มี token → 401' ตรง TODO W13-AUTH
+  const put = () => request(app).put('/api/requests/REQ-001').send({ status: 'completed' });
+
+  test('token ที่เซ็นด้วย secret อื่น (ปลอม) → 401', async () => {
+    const r = await put().set('Authorization', `Bearer ${tokenFor('staff', 'not-the-real-secret')}`);
+    expect(r.status).toBe(401);
+  });
+  test('token ถูกต้องแต่ไม่ใช่เจ้าหน้าที่ → 403', async () => {
+    const r = await put().set('Authorization', `Bearer ${tokenFor('requester')}`);
+    expect(r.status).toBe(403);
+  });
+  test('เจ้าหน้าที่ → PUT 200 และ DELETE 204', async () => {
+    const auth = `Bearer ${await loginAsStaff(app)}`;
+    await put().set('Authorization', auth).expect(200);
+    await request(app).delete('/api/requests/REQ-002').set('Authorization', auth).expect(204);
+  });
+  test('ส่งคำร้อง (POST) และดูรายการ (GET) ยังไม่ต้องเข้าสู่ระบบ', async () => {
+    await request(app).get('/api/requests').expect(200);
+    await request(app).post('/api/requests').send({
+      requesterName: 'นักศึกษา ทั่วไป', requestType: 'แจ้งซ่อม', location: 'ห้อง 205',
+      details: 'ไฟห้องเรียนดับสองดวง', priority: 'normal',
+    }).expect(201);
   });
 });

@@ -2,6 +2,13 @@
 
 **สัปดาห์ที่ 13** · หน่วยที่ 5 คุณภาพซอฟต์แวร์ การทดสอบ และความพร้อมก่อนใช้งาน · **ช่วงบ่าย · ปิดหน่วย** · CLO6 · งาน A5 คุณภาพและความปลอดภัย
 
+| ข้อมูลนักศึกษา / การส่งงาน | รายละเอียด |
+|---|---|
+| **ชื่อ-นามสกุล** | ณัฏฐกิตติ์ รอดเรือน (BELLprime) |
+| **รหัสนักศึกษา** | 68543210007 (SEC1) |
+| **Branch** | `unit5/week-13` |
+| **GitHub Pages** | [ENGSE203 LAB Portfolio](https://BELLprime.github.io/engse203-student-labs-68543210007/) |
+
 > สอนต่อจาก [LAB 12](../week-12-testing-debugging/) ในวันเดียวกัน — บ่าย 13:00–16:00
 > Sec 1 วันจันทร์ที่ 5 ต.ค. · Sec 2 วันพฤหัสบดีที่ 8 ต.ค.
 
@@ -112,6 +119,7 @@ node --disable-warning=ExperimentalWarning check-week12.mjs --inclass   # ยั
 | `api/src/services/authService.js` · `api/src/app.js` | CP50 |
 | `api/src/middleware/auth.js` · `api/src/routes/requestRoutes.js` · `api/tests/integration/*.test.js` | CP51 |
 | `api/src/config.js` · `api/.env.example` | CP52 |
+| `source/AI_USAGE.md` | บันทึกการใช้ AI (References & AI Assistance) |
 
 ```bash
 git switch -c unit5/week-13
