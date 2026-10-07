@@ -21,7 +21,7 @@ export function hashPassword(plain) {
   return `scrypt$${salt}$${hash}`;
 }
 
-export function verifyPassword(plain, stored) {
+export function verifyPassword(plain, stored) { //stored คือ data in db
   // TODO: แยก stored ด้วย '$' → ตรวจว่า scheme เป็น 'scrypt'
   //       → scryptSync(plain, salt, ความยาวของ hash เดิม)
   //       → เทียบด้วย timingSafeEqual (ไม่ใช่ ===)  ← ทำไม? อ่านเอกสารบทที่ 4

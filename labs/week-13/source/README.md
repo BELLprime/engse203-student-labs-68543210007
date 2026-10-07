@@ -123,3 +123,8 @@ curl -X POST localhost:3001/api/auth/login -H "Content-Type: application/json" \
 curl -X PUT localhost:3001/api/requests/REQ-001 -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" -d '{"status":"completed"}'
 ```
+
+## การใช้งาน AI (References & AI Assistance)
+
+- บันทึกการใช้งานและการเรียนรู้ผ่าน AI อย่างละเอียดลงในเอกสาร [`AI_USAGE.md`](AI_USAGE.md)
+

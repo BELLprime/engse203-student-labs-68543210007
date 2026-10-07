@@ -23,6 +23,13 @@ describe('POST /api/auth/login', () => {
   });
 
   // 🏫 TODO W13-LOGIN (CP50): อีเมลที่ไม่มี ต้องได้ข้อความ error เดียวกับรหัสผ่านผิด
+  test('รหัสผ่านผิด กับ อีเมลที่ไม่มี → 401 ข้อความเดียวกัน', async () => {
+    const wrong = await request(app).post('/api/auth/login').send({ ...STAFF, password: 'nope1234' });
+    const unknown = await request(app).post('/api/auth/login').send({ email: 'ghost@rmutl.ac.th', password: 'nope1234' });
+    expect(wrong.status).toBe(401);
+    expect(unknown.status).toBe(401);
+    expect(wrong.body.error).toBe(unknown.body.error);
+  });
 });
 
 describe('สิทธิ์ของ PUT / DELETE', () => {

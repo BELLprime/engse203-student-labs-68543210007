@@ -55,7 +55,7 @@ INSERT INTO users (name, department, email) VALUES
 
 -- บัญชีเจ้าหน้าที่สำหรับพัฒนาและทดสอบ — รหัสผ่าน staff1234 (เก็บเป็น hash)
 -- ⚠ production ต้องสร้างบัญชีใหม่ด้วย npm run create-staff และลบบัญชีนี้
-INSERT INTO users (name, department, email, role, password_hash) VALUES
+INSERT INTO users (name, department, email, role, password_hash) VALUES --มีการ login มาก่อน
   ('เจ้าหน้าที่ฝ่ายบริการ', 'งานอาคารสถานที่', 'staff@rmutl.ac.th', 'staff',
    'scrypt$5e1f0c3a9b7d2e4f6a8c0b1d3e5f7a9c$2f81bcd58254b475f16ddaf1e278338fa0990ed132f8b206d0a88cb4108b6b4f90df05c0d97166e2a108ab36bf3d81f7884165fff13d4ec42a67cfa36771bc38');
 
