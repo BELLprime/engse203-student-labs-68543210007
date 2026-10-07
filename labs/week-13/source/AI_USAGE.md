@@ -53,3 +53,23 @@
 **เข้าใจโค้ดที่ได้มาไหม** ☑ เข้าใจทั้งหมด ☐ เข้าใจบางส่วน ☐ ยังไม่เข้าใจ
 
 ---
+
+## ครั้งที่ 3 · ความหมายและบทบาทของ Security Header (`X-Content-Type-Options: nosniff`)
+
+**ถามอะไร**
+- `('X-Content-Type-Options', 'nosniff')` คืออะไร (ทำไมถึงต้องใส่ มีไว้เพื่อป้องกันอะไรในการพัฒนา Web Application)
+
+**AI ตอบว่าอย่างไร (สรุปสั้น)**
+- **MIME-Type Sniffing (ปัญหาเดิม):** ตามปกติ Web Browser มีฟีเจอร์พยายาม "เดา" ชนิดไฟล์เอง (MIME Sniffing) หาก Content-Type ไม่ตรงหรือคลุมเครือ เช่น ไฟล์ข้อความหรือรูปภาพที่อัปโหลดแอบฝังโค้ด `<script>` ไว้ เบราว์เซอร์บางตัวอาจพยายามตีความเป็นสคริปต์แล้วสั่งประมวลผล ส่งผลให้เกิดช่องโหว่ Cross-Site Scripting (XSS) หรือ MIME-Confusion Attacks
+- **หน้าที่ของ Header `X-Content-Type-Options: nosniff`:**
+  - เป็น HTTP Response Header ที่เซิร์ฟเวอร์ส่งกลับไปสั่ง Browser ว่า **"ห้ามเดาชนิดไฟล์เองเด็ดขาด (Do NOT sniff)"**
+  - บังคับให้เบราว์เซอร์เชื่อและปฏิบัติตามค่า `Content-Type` ที่เซิร์ฟเวอร์ระบุมาเท่านั้น เช่น ถ้า Server บอกว่าเป็น `application/json` ก็ต้องมองเป็นข้อมูล JSON เท่านั้น ห้ามตีความเป็น JavaScript หรือ HTML ไปรัน
+  - ปฏิเสธการรัน Script หรือโหลด Stylesheet หาก Content-Type ต้นทางไม่ถูกต้องตามมาตรฐาน MIME type
+- **การนำไปใช้ใน Week 13 / Term Project:**
+  - กำหนดเป็น Middleware ใน `api/src/app.js` ของ Express ผ่าน `res.setHeader('X-Content-Type-Options', 'nosniff')` ให้ครอบคลุมทุกคำขอ
+  - เป็นหนึ่งในแนวปฏิบัติด้านความปลอดภัยพื้นฐานตามมาตรฐาน OWASP Secure Headers
+
+**ใช้ส่วนไหน / แก้เองตรงไหน**
+- นำความเข้าใจนี้ไปตอบคำถามเชิงวิศวกรรมความปลอดภัย และนำไปใช้ทำโจทย์ Challenge ข้อที่ 1 ของสัปดาห์ที่ 13 โดยเพิ่ม Response Header ลงใน Middleware ของ Express (`api/src/app.js`)
+
+**เข้าใจโค้ดที่ได้มาไหม** ☑ เข้าใจทั้งหมด ☐ เข้าใจบางส่วน ☐ ยังไม่เข้าใจ
