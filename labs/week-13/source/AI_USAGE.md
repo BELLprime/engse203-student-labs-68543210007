@@ -31,3 +31,25 @@
 **เข้าใจโค้ดที่ได้มาไหม** ☑ เข้าใจทั้งหมด ☐ เข้าใจบางส่วน ☐ ยังไม่เข้าใจ
 
 ---
+
+## ครั้งที่ 2 · ภาพรวมเส้นทางการทำงานของระบบ (End-to-End Request Flow) จาก End-User ถึง Database
+
+**ถามอะไร**
+- ช่วยบอกภาพรวมของการทำงานหน่อย ถ้าเริ่มจาก enduser จะผ่านที่ไหนบ้าง (Request Lifecycle และด่านตรวจความปลอดภัย)
+
+**AI ตอบว่าอย่างไร (สรุปสั้น)**
+- **โครงสร้าง 3 ชั้นหลัก:**
+  1. **Frontend (React UI บน Browser):** รับ input จากผู้ใช้, ตรวจสอบเบื้องต้น (Client-side validation), และยิงคำขอผ่าน `fetch` / `apiClient.js`
+  2. **Backend (Express API Server):** ผ่าน Middlewares ด่านตรวจ 4 ด่าน (CORS/Body limit 10kb → Router → Validation / Authentication 401 / Authorization 403) → ส่งต่อให้ Controller และ Service
+  3. **Database (SQLite `campus.db`):** Service รัน Parameterized SQL Query (`prepare().run()`) เพื่ออ่าน/บันทึกข้อมูลอย่างปลอดภัย
+- **เส้นทาง 2 รูปแบบ:**
+  - **รูปแบบที่ 1 (Public Flow - เช่น ดูหรือส่งคำร้อง):** `User UI` ─▶ `apiClient` ─▶ `express.json(10kb)` ─▶ `validateRequest` ─▶ `requestController` ─▶ `requestService` ─▶ `campus.db` ─▶ ตอบ 201 Created
+  - **รูปแบบที่ 2 (Protected Staff Flow - เช่น เปลี่ยนสถานะหรือลบคำร้อง):** เจ้าหน้าที่ต้อง Login ได้รับ JWT ก่อน ─▶ แนบ Header `Authorization: Bearer <token>` ─▶ ผ่านด่าน `authenticate` (ตรวจ token) ─▶ ผ่านด่าน `requireRole('staff')` (ตรวจสิทธิ์) ─▶ Controller ทำงาน ─▶ ตอบ 200 OK หรือ 204 No Content
+- **การจัดการความปลอดภัยและ Error:** หากผิดด่านไหน เซิร์ฟเวอร์จะตัดไฟตอบกลับทันที (413 / 400 / 401 / 403 / 404 / 500) โดยไม่ส่ง stack trace ออกไปในโหมด Production
+
+**ใช้ส่วนไหน / แก้เองตรงไหน**
+- นำความเข้าใจภาพรวม Request Lifecycle นี้ไปใช้อธิบายสถาปัตยกรรมระบบ 3 ชั้น และลำดับการทำงานของ Middleware ในการสัมภาษณ์และนำเสนอ Final Term Project
+
+**เข้าใจโค้ดที่ได้มาไหม** ☑ เข้าใจทั้งหมด ☐ เข้าใจบางส่วน ☐ ยังไม่เข้าใจ
+
+---
