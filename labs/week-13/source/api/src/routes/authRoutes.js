@@ -27,7 +27,7 @@ router.post('/login', (req, res) => {
   if (records) {
     if (now > records.resetAt) { // ครบ 1 นาทีแล้ว 
       failedAttempts.delete(email);
-    } else if (record.count >= 5) {// ยังไม่ครบ 1 นาที และผิดครบ 5 ครั้งขึ้นไป -> block
+    } else if (records.count >= 5) {// ยังไม่ครบ 1 นาที และผิดครบ 5 ครั้งขึ้นไป -> block
       return res.status(429).json({ error: 'พยายามเข้าสู่ระบบผิดเกินกำหนด กรุณารอ 15 นาที' });
     }
   }
@@ -35,7 +35,7 @@ router.post('/login', (req, res) => {
   const result = authService.login(req.body.email, req.body.password);
 
   if (!result) {
-    const currentCount = (record && now <= record.resetAt) ? record.count : 0;
+    const currentCount = (records && now <= records.resetAt) ? records.count : 0;
     failedAttempts.set(email, {
       count: currentCount + 1,
       resetAt: now + WINDOW_MS
