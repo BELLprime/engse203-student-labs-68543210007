@@ -7,6 +7,9 @@
 | **ชื่อ-นามสกุล** | ณัฏฐกิตติ์ รอดเรือน (BELLprime) |
 | **รหัสนักศึกษา** | 68543210007 (SEC1) |
 | **Branch** | `unit5/week-13` |
+| **Submission Tag** | `lab-13-submission-v1` |
+| **ผลการตรวจ (Checker)** | ผ่าน 27/27 รายการ (In-Class 23/23 + Challenge 4/4) ✅ |
+| **Cloud Deployment (Render + Turso)** | [https://campus-service-w13.onrender.com](https://campus-service-w13.onrender.com) |
 | **GitHub Pages** | [ENGSE203 LAB Portfolio](https://BELLprime.github.io/engse203-student-labs-68543210007/) |
 
 > สอนต่อจาก [LAB 12](../week-12-testing-debugging/) ในวันเดียวกัน — บ่าย 13:00–16:00
