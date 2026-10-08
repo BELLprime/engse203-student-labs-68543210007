@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../services/authService.jsx';
 
 function RequestCard({ request, onDeleteRequest }) {
+  const { isStaff } = useAuth();
+  
   return (
     <article className="request-card">
       <div>
@@ -10,9 +13,17 @@ function RequestCard({ request, onDeleteRequest }) {
         <p>{request.details}</p>
         <p><span className={`badge ${request.status}`}>{request.status}</span> · {request.priority}</p>
       </div>
-      <button className="button danger" type="button" onClick={() => onDeleteRequest(request.id)} aria-label={`ลบคำร้อง ${request.id}`}>
-        ลบ
-      </button>
+      {/* ถ้า isStaff show "ลบ" */}
+      {isStaff && (
+        <button 
+          className="button danger" 
+          type="button" 
+          onClick={() => onDeleteRequest(request.id)} 
+          aria-label={`ลบคำร้อง ${request.id}`}
+        >
+          ลบ
+        </button>
+      )}
     </article>
   );
 }
