@@ -46,7 +46,6 @@ function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="staff@rmutl.ac.th"
               required
             />
           </div>
@@ -58,7 +57,6 @@ function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="staff1234"
               required
             />
           </div>
