@@ -33,8 +33,8 @@ export async function apiFetch(path, options = {}) {
   let response;
   try {
     // CHAL ดึง Token ของผู้ใช้ที่ล็อกอินไว้ (ถ้ามี)
-    const token = typeof localStorage !== ' undefined'? localStorage.getIem('token') : null;
-    const authHeaders = token? { Authorization: `Bearer ${token}` } : {};
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
+    const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
     response = await fetch(`${BASE_URL}${path}`, {
       headers: { 'Content-Type': 'application/json', ...authHeaders, ...options.headers },
       ...options,
